@@ -1,0 +1,12 @@
+canvas {
+    background: black;
+}
+
+.fps-meter {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+}

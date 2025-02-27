@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "target": "ESNext",
+    "baseUrl": "./",
+    "paths": {
+      "@errors/*": ["src/application/errors/*"],
+      "@/*": ["src/*"],
+      // "@games/*": ["games/*"],
+      // "@error/*": ["src/Application/Errors/*"],
+      // "@core/*": ["src/Engine/Core/*"],
+      // "@lib/*": ["src/Engine/Lib/*"]
+    },
+    "preserveSymlinks": true
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "src/**/*.js",
+    "games/**/*.js",
+  ]
+}
