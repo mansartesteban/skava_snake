@@ -6,7 +6,7 @@ class Snake extends Project {
       super();
     }
   
-    setup() {
+    setup() { 
       let scene = new SnakeScene();
       this.addScene(scene);
     }

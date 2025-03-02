@@ -1,31 +1,27 @@
-import { v4 as uuid } from "uuid"
-
 class Component {
-  name = "";
   options = {};
   active = true;
   entity = null;
   needsUpdate = false;
 
-  constructor(name, options) {
-    this.name = name || uuid()
+  constructor(options) {
     if (options) {
       this.options = { ...this.options, ...options };
     }
 
-    queueMicrotask(() => this.setup())
+    queueMicrotask(() => this.setup());
   }
 
-  updateComponent(deltaTime = 0) {
+  updateComponent(deltaTime, currentTime) {
     if (this.active) {
-      this.update(deltaTime);
+      this.loop(deltaTime, currentTime);
     }
   }
 
-  update(deltaTime = 0) {}
+  loop(deltaTime, currentTime) {}
 
   refresh() {}
   setup() {}
 }
 
-export default Component; 
+export default Component;

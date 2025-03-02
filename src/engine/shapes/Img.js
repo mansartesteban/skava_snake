@@ -43,7 +43,6 @@ class Img {
         this.img.height * scale.y
       );
       ctx.restore();
-      console.log("drawing img");
     }
   }
 }

@@ -32,16 +32,15 @@ class Engine {
     let deltaTimeFps = (currentTime - parseFloat(this.fpsMeter.getAttribute("last-update"))) / 1000
     let deltaTime = (currentTime - this.lastUpdate) / 1000
     
-    if (deltaTimeFps > .02) {
+    if (deltaTimeFps > .5) {
       this.fpsMeter.innerText = (1 / deltaTime).toFixed()
       this.fpsMeter.setAttribute("last-update", currentTime+"")
     }
     if (this.project) {
-      this.project.update(deltaTime);
+      this.project.update(deltaTime, currentTime);
     }
     this.lastUpdate = currentTime
-    // await new Promise(r => setTimeout(r, 1000))
-    window.requestAnimationFrame(this.loop.bind(this));
+      window.requestAnimationFrame(this.loop.bind(this));
   }
 }
 

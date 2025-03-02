@@ -1,12 +1,11 @@
-import ControlCommand from "@/engine/ControlCommand"
-import Vector2 from "@/engine/lib/Vector2"
+import Vector2 from "@/engine/lib/Vector2";
+import SnakePhysics from "../snake/SnakePhysics";
+import CommandOnce from "@/engine/commands/CommandOnce";
 
-class MoveUp extends ControlCommand {
-
-    execute(deltaTime) {
-        this.entity.move(new Vector2(0, -this.entity.speed * deltaTime));
-    }
-
+class MoveUp extends CommandOnce {
+  execute(deltaTime) {
+    this.entity.getComponent(SnakePhysics).changeDirection(new Vector2(0, -1));
+  }
 }
 
-export default MoveUp
+export default MoveUp;

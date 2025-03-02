@@ -38,11 +38,11 @@ class Project {
     throw new ImplementError("setup", "Project");
   }
 
-  update(deltaTime) {
-    this.scenes.forEach((scene) => scene.update(deltaTime));
-    this.loop(deltaTime);
+  update(deltaTime, currentTime) {
+    this.scenes.forEach((scene) => scene.update(deltaTime, currentTime));
+    this.loop(deltaTime, currentTime);
   }
-  loop(deltaTime) {}
+  loop(deltaTime,currentTime) {}
 }
 
 export default Project;

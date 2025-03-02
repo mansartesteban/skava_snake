@@ -1,12 +1,12 @@
-import Component from "./Component"
-import { v4 as uuid } from "uuid"
-import TransformComponent from "./components/TransformComponent"
+import Component from "./Component";
+import { v4 as uuid } from "uuid";
+import TransformComponent from "./components/TransformComponent";
 
 class Entity {
   uuid = uuid();
   name = "";
   components = new Map();
-  
+
   transform = new TransformComponent();
   scene;
 
@@ -19,22 +19,27 @@ class Entity {
   addComponent(component) {
     component.entity = this;
     component.refresh();
-    this.components.set(component.name, component);
+    this.components.set(component.constructor, component);
   }
 
   removeComponent(component) {
-    this.components.delete(component.name)
+    this.components.delete(component.name);
   }
 
   getComponent(component) {
-    let componentName = component instanceof Component ? component.name : component
-    return this.components.get(componentName)
+    let componentClass =
+      component instanceof Component ? component.constructor : component;
+    return this.components.get(componentClass);
   }
 
-  update(deltaTime) {
-    this.components.forEach((component) => component.updateComponent(deltaTime));
+  update(deltaTime, currentTime) {
+    this.loop();
+    this.components.forEach((component) =>
+      component.updateComponent(deltaTime, currentTime)
+    );
   }
 
+  loop() {}
   initialize() {}
 }
 

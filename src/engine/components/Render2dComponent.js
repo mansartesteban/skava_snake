@@ -13,11 +13,11 @@ class Render2DComponent extends Component {
     }
   }
 
-  update(deltaTime) {
-    this.render(this.entity.scene.viewer);
+  updateComponent(deltaTime, currentTime) {
+    this.render(this.entity.scene.viewer, deltaTime, currentTime);
   }
 
-  render(_) {
+  render(_, deltaTime, currentTime) {
     throw new ImplementError("render", "RenderComponent");
   }
 }

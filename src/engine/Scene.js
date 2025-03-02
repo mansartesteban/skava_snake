@@ -47,19 +47,19 @@ class Scene {
   // }
 
   add(entity) {
-    this.entityManager.add(entity);
     entity.scene = this
+    this.entityManager.add(entity);
   }
 
   remove(entityToDelete) {
     this.entityManager.delete(entityToDelete)
   }
 
-  update(deltaTime) {
+  update(deltaTime, currentTime) {
     if (this.setupFinished) {
       this.viewer?.refresh(deltaTime);
-      this.loop(deltaTime);
-      this.entityManager.update(deltaTime);
+      this.loop(deltaTime, currentTime);
+      this.entityManager.update(deltaTime, currentTime);
     }
   }
 
@@ -68,7 +68,7 @@ class Scene {
       `"setup()" method is not implemented on the scene ${this.constructor.name}`
     );
   }
-  loop(deltaTime) {
+  loop(deltaTime, currentTime) {
     if (!this.#loopHasBeenWarned) {
       this.#loopHasBeenWarned = true;
       console.warn(

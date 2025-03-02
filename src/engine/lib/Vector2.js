@@ -42,7 +42,7 @@ class Vector2 {
    * Returns the squared Euclidian distance of this vector
    */
   get squid() {
-    return this.x * this.x + this.y * this.y;
+    return this.x ** 2 + this.y ** 2
   }
 
   /**
@@ -52,7 +52,7 @@ class Vector2 {
     if (this.length === 0) {
       return Vector2.O;
     }
-    return this.copy().divide(this.length);
+    return this.clone().divide(this.length);
   }
 
   /**
@@ -190,10 +190,10 @@ class Vector2 {
    */
   clampLength(length) {
     if (length === 0) {
-      this.set(Vector2.O);
+      this.copy(Vector2.O);
     }
 
-    this.set(this.normalized.multiply(Math.min(this.length, length)));
+    this.copy(this.normalized.multiply(Math.min(this.length, length)));
 
     return this;
   }
@@ -267,10 +267,10 @@ class Vector2 {
   /* ===== Assigning ===== */
 
   /**
-   * Returns a copy of this vector
+   * Returns a clone of this vector
    * @returns Vector2
    */
-  copy() {
+  clone() {
     return new Vector2(this.x, this.y);
   }
 
@@ -279,7 +279,7 @@ class Vector2 {
    * @param v The vector to be copied
    * @returns this Returns this for methods chaining
    */
-  set(v) {
+  copy(v) {
     if (v) {
       this.x = v.x;
       this.y = v.y;
@@ -297,7 +297,7 @@ class Vector2 {
    */
   static from(origin) {
     return {
-      to: (target) => target.copy().sub(origin),
+      to: (target) => target.clone().sub(origin),
     };
   }
 }

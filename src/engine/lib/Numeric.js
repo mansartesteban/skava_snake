@@ -29,6 +29,10 @@
   const radiansToDegrees = (radians = 0) => {
     return radians * (180 / Math.PI);
   }
+  const lerp = (a, b, delta) => {
+    delta = clamp(delta, 0, 1);
+    return (1 - delta) * a + delta * b;
+  }
 
 export {
   num,
@@ -37,6 +41,7 @@ export {
   mapRange,
   minMax,
   clamp,
+  lerp,
   randomHexadecimal,
   degreesToRadians,
   radiansToDegrees,

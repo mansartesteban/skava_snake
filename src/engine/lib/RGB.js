@@ -160,7 +160,7 @@ class RGB {
         this.r * color,
         this.g * color,
         this.b * color,
-        this.opacity * color
+        // this.opacity * color
       );
     } else {
       throw (
@@ -189,6 +189,30 @@ class RGB {
     }
     return this;
   }
+
+    /**
+   * Returns a clone of this vector
+   * @returns RGB
+   */
+    clone() {
+      return new RGB(this.r, this.g, this.b, this.opacity);
+    }
+  
+    /**
+     * Copies the coordinates of a given vector to this vector
+     * @param v The vector to be copied
+     * @returns this Returns this for methods chaining
+     */
+    copy(v) {
+      if (v) {
+        this.r = v.r;
+        this.g = v.g;
+        this.b = v.b;
+        this.opacity = v.opacity;
+      }
+      return this;
+    }
+
 }
 
 export default RGB;

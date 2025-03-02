@@ -56,19 +56,19 @@ class DebugVector {
         Vector2.from(this.from).to(this.to).normalized.multiply(-arrowSize)
       );
       let front = this.to
-        .copy()
+        .clone()
         .add(
           Vector2.from(this.from).to(this.to).normalized.multiply(arrowSize)
         );
-      let frontDirection = Vector2.from(this.to).to(front).normalized;
-      let arrowSides = Math.sin(Math.PI / 5) * arrowSize;
+      let frontDirection = Vector2.from(this.to).to(this.from).normalize();
+      let arrowSides = arrowSize * 2;
 
-      let left = frontDirection
-        .rotate(new Rotation(Math.PI / 2))
+      let left = frontDirection.clone()
+        .rotate(new Rotation(Math.PI * 2))
         .multiply(arrowSides)
         .add(this.to);
-      let right = frontDirection
-        .rotate(new Rotation(-Math.PI / 2))
+      let right = frontDirection.clone()
+        .rotate(new Rotation(-Math.PI * 2))
         .multiply(arrowSides)
         .add(this.to);
 

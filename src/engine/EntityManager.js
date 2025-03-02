@@ -48,18 +48,18 @@ class EntityManager {
   }
 
   add(entity) {
-    let $this = this;
 
     if (entity.children) {
-      entity.children.forEach((child) => $this.add(child));
+      entity.children.forEach((child) => this.add(child));
     }
+    entity.setup()
     this.entities.push(entity);
 
     this.observer.$emit(EntityManager.EVENTS.ENTITY_ADDED, entity);
   }
 
-  update(deltaTime) {
-    this.entities.forEach((entity) => entity.update(deltaTime));
+  update(deltaTime, currentTime) {
+    this.entities.forEach((entity) => entity.update(deltaTime, currentTime));
   }
 }
 

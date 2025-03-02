@@ -1,6 +1,6 @@
 import ImplementError from "@errors/ImplementError"
 
-class ControlCommand {
+class Command {
     entity = null;
 
     constructor(entity) {
@@ -8,8 +8,8 @@ class ControlCommand {
     }
 
     execute() {
-        throw new ImplementError("execute", "ControlCommand")
+        throw new ImplementError("execute", "Command")
     }
 }
 
-export default ControlCommand;
+export default Command;
