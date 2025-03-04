@@ -1,8 +1,8 @@
-import Vector2 from "@/engine/lib/Vector2";
+import Vector2 from "@/Engine/Lib/Vector2";
 import Food from "./Food";
 import FoodRender from "./FoodRender";
-import RGB from "@/engine/lib/RGB";
-import { random } from "@/engine/lib/Numeric";
+import RGB from "@/Engine/Lib/RGB";
+import { random } from "@/Engine/Lib/Numeric";
 
 class FoodFeeder {
   position = new Vector2();

@@ -1,5 +1,5 @@
-import Entity from "@/engine/Entity"
-import Vector2 from "@/engine/lib/Vector2"
+import Entity from "@/Engine/Entity"
+import Vector2 from "@/Engine/Lib/Vector2"
 
 class Food extends Entity {
     position = new Vector2()

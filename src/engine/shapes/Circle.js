@@ -1,6 +1,6 @@
-import RGB from "../lib/RGB"
-import Rotation from "../lib/Rotation"
-import Vector2 from "../lib/Vector2"
+import RGB from "../Lib/RGB";
+import Rotation from "../Lib/Rotation";
+import Vector2 from "../Lib/Vector2";
 import Draw from "./Draw";
 
 class Circle {
@@ -9,19 +9,22 @@ class Circle {
   #color;
   #angle;
   #direction;
+  #options;
 
   constructor(
     position = new Vector2(),
     radius = 1,
     color = new RGB(),
-    angle = new Rotation(Math.PI * 2, true),
-    direction = new Vector2()
+    angle = null,
+    direction = null,
+    options = {}
   ) {
     this.#position = position;
     this.#radius = radius;
     this.#color = color;
-    this.#angle = angle;
-    this.#direction = direction;
+    this.angle = angle;
+    this.direction = direction;
+    this.#options = options;
   }
 
   get position() {
@@ -43,6 +46,9 @@ class Circle {
   get direction() {
     return this.#direction;
   }
+  get options() {
+    return this.#options;
+  }
 
   set position(position) {
     this.#position = position;
@@ -54,16 +60,32 @@ class Circle {
     this.#color = color;
   }
   set angle(angle) {
+    if (!angle) {
+      angle = new Rotation(Math.PI * 2, true);
+    }
     this.#angle = angle;
   }
   set direction(direction) {
+    if (!direction) {
+      direction = new Vector2();
+    }
     this.#direction = direction;
+  }
+  set options(options) {
+    this.#options = options;
   }
 
   draw(viewer) {
     let ctx = viewer.ctx;
     Draw.draw(viewer, () => {
       ctx.fillStyle = this.#color._toString;
+
+      if (this.#options.shadowBlur) {
+        ctx.shadowBlur = this.#options.shadowBlur;
+      }
+      if (this.#options.shadowColor) {
+        ctx.shadowColor = this.#options.shadowColor._toString;
+      }
 
       ctx.arc(
         this.position.x,
@@ -77,6 +99,14 @@ class Circle {
       }
 
       ctx.fill();
+
+      if (this.#options.shadowBlur) {
+        ctx.shadowBlur = 0;
+      }
+      if (this.#options.shadowColor) {
+        ctx.shadowColor = "";
+      }
+
       return ["fillStyle"];
     });
   }

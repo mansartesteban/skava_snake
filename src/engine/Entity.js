@@ -1,29 +1,25 @@
 import Component from "./Component";
 import { v4 as uuid } from "uuid";
-import TransformComponent from "./components/TransformComponent";
+import TransformComponent from "./Components/TransformComponent";
 
 class Entity {
   uuid = uuid();
-  name = "";
   components = new Map();
-
   transform = new TransformComponent();
   scene;
 
   constructor(...components) {
-    this.selectable = true;
     components.forEach((component) => this.addComponent(component));
-    this.initialize();
   }
 
   addComponent(component) {
     component.entity = this;
-    component.refresh();
+    component.setup();
     this.components.set(component.constructor, component);
   }
 
   removeComponent(component) {
-    this.components.delete(component.name);
+    this.components.delete(component.constructor);
   }
 
   getComponent(component) {
@@ -36,11 +32,10 @@ class Entity {
     this.loop();
     this.components.forEach((component) =>
       component.updateComponent(deltaTime, currentTime)
-    );
+  );
   }
 
   loop() {}
-  initialize() {}
 }
 
 export default Entity;

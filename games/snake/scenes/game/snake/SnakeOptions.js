@@ -1,4 +1,4 @@
-import Component from "@/engine/Component";
+import Component from "@/Engine/Component";
 
 class SnakeOptions extends Component {
   setup() {

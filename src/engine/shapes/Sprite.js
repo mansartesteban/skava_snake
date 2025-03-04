@@ -1,6 +1,6 @@
-import TransformComponent from "../components/TransformComponent"
-import Rotation from "../lib/Rotation"
-import Vector2 from "../lib/Vector2"
+import TransformComponent from "../Components/TransformComponent"
+import Rotation from "../Lib/Rotation"
+import Vector2 from "../Lib/Vector2"
 import Img from "./Img"
 
 class Sprite extends Img{

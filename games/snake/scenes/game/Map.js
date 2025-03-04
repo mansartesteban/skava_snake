@@ -1,14 +1,14 @@
-import RGB from "@/engine/lib/RGB";
-import Vector2 from "@/engine/lib/Vector2";
-import RoundSquare from "@/engine/shapes/RoundSquare";
-import Square from "@/engine/shapes/Square";
+import RGB from "@/Engine/Lib/RGB";
+import Vector2 from "@/Engine/Lib/Vector2";
+import RoundSquare from "@/Engine/Shapes/RoundSquare";
+import Square from "@/Engine/Shapes/Square";
 
 class Map {
   options = {
     size: 0,
     subdivisions: 0,
     borderSize: 8,
-  };
+  }; 
 
   constructor(options) {
     this.options = { ...this.options, ...options };

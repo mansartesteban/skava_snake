@@ -1,5 +1,5 @@
 import Observer from "./Observer"
-import Timer from "./lib/Time/Timer"
+import Timer from "./Lib/Time/Timer"
 
 const Events = {
   INITIALIZED: "INITIALIZED",
@@ -39,6 +39,7 @@ class Engine {
     if (this.project) {
       this.project.update(deltaTime, currentTime);
     }
+    // await new Promise(r => setTimeout(r, 1000))
     this.lastUpdate = currentTime
       window.requestAnimationFrame(this.loop.bind(this));
   }

@@ -1,4 +1,5 @@
-import TransformComponent from "../components/TransformComponent"
+import TransformComponent from "../Components/TransformComponent"
+import RGB from "../Lib/RGB"
 
 class Img {
   #path;
@@ -31,10 +32,14 @@ class Img {
       ctx.rotate(-rotation.angle);
       ctx.translate(-position.x, -position.y);
       ctx.imageSmoothingEnabled = false;
+      ctx.shadowOffsetX = 3;
+      ctx.shadowOffsetY = 2;
+      ctx.shadowColor = new RGB(0, 0, 0, .25)._toString;
+      ctx.shadowBlur=4
       ctx.drawImage(
         this.img,
-        position.x,
-        position.y,
+        0,
+        0,
         this.img.width,
         this.img.height,
         position.x - (this.img.width * scale.x) / 2,

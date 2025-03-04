@@ -1,23 +1,23 @@
-import RGB from "../lib/RGB"
-import Vector2 from "../lib/Vector2"
-import Draw from "./Draw"
+import RGB from "../Lib/RGB";
+import Vector2 from "../Lib/Vector2";
+import Draw from "./Draw";
 
 class Text {
   #text;
   #position;
   #color;
-  #style;
+  #fontSize;
 
   constructor(
     text = "",
     position = new Vector2(),
     color = RGB.White,
-    style = "10pt sans-serif"
+    fontSize = 10
   ) {
     this.#text = text;
     this.#position = position;
     this.#color = color;
-    this.#style = style;
+    this.#fontSize = fontSize;
   }
 
   get text() {
@@ -29,8 +29,8 @@ class Text {
   get color() {
     return this.#color;
   }
-  get style() {
-    return this.#style;
+  get fontSize() {
+    return this.#fontSize;
   }
 
   set text(text) {
@@ -42,32 +42,23 @@ class Text {
   set color(color) {
     this.#color = color;
   }
-  set style(style) {
-    this.#style = style;
+  set fontSize(fontSize) {
+    this.#fontSize = fontSize;
   }
 
   draw(viewer) {
     let ctx = viewer.ctx;
     Draw.draw(viewer, () => {
-      ctx.font = this.style;
-      let width = ctx.measureText(this.text).width;
-      let heightMatcher = ctx.font.match(/\d+/);
-      let height = 0;
-      if (heightMatcher) {
-        height = parseInt(heightMatcher[0], 10);
-      }
-      let margin = 5;
-
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(
-        this.position.x - margin,
-        this.position.y - height - margin / 2,
-        width + margin * 2,
-        height + margin * 2
-      );
+      ctx.font = `${this.fontSize}pt sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "center";
 
       ctx.fillStyle = this.color._toString;
-      ctx.fillText(this.text.toString(), this.position.x, this.position.y);
+      ctx.fillText(
+        this.text.toString(),
+        this.position.x,
+        this.position.y + this.fontSize / 2.15
+      );
 
       return ["fillStyle"];
     });

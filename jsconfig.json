@@ -4,7 +4,7 @@
     "target": "ESNext",
     "baseUrl": "./",
     "paths": {
-      "@errors/*": ["src/application/errors/*"],
+      "@errors/*": ["src/Application/errors/*"],
       "@/*": ["src/*"],
       // "@games/*": ["games/*"],
       // "@error/*": ["src/Application/Errors/*"],
@@ -16,6 +16,6 @@
   "exclude": ["node_modules"],
   "include": [
     "src/**/*.js",
-    "games/**/*.js",
+    "Games/**/*.js",
   ]
 }

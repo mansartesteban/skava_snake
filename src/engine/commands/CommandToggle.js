@@ -1,4 +1,4 @@
-import ImplementError from "@errors/ImplementError";
+import ImplementError from "@/Application/errors/ImplementError";
 import Command from "./Command";
 
 class CommandToggle extends Command {

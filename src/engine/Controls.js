@@ -1,7 +1,10 @@
-import CommandHold from "./commands/CommandHold";
-import CommandMouseMove from "./commands/CommandMouseMove";
-import CommandOnce from "./commands/CommandOnce";
-import CommandToggle from "./commands/CommandToggle";
+import CommandClick from "./Commands/CommandClick";
+import CommandHold from "./Commands/CommandHold";
+import CommandMouseMove from "./Commands/CommandMouseMove";
+import CommandOnce from "./Commands/CommandOnce";
+import CommandToggle from "./Commands/CommandToggle";
+import Vector2 from "./Lib/Vector2";
+import OnClick from "./UI/Events/OnClick";
 
 class Controls {
   stack = [];
@@ -10,38 +13,56 @@ class Controls {
 
   pointerLock = null;
 
-  constructor() {
-    window.addEventListener("keyup", this.onKeyUp.bind(this));
-    window.addEventListener("keydown", this.onKeyDown.bind(this));
-    window.addEventListener("mousemove", this.onMouseMove.bind(this));
+  mouse = new Vector2();
 
-    // document.onpointerlockchange = (event) => {
-    //   this.pointerLock = document.pointerLockElement;
-    // };
+  constructor(pointerLock = false) {
+    window.addEventListener("keyup", this.#onKeyUp.bind(this));
+    window.addEventListener("keydown", this.#onKeyDown.bind(this));
+    window.addEventListener("mousemove", this.#onMouseMove.bind(this));
+    window.addEventListener("click", this.#onClick.bind(this));
 
-    // document.body.addEventListener("click", async (e) => {
-    //   e.stopPropagation();
-    //   if (e.which !== 3) {
-    //     await document.body.requestPointerLock({
-    //       unadjustedMovement: true,
-    //     });
-    //   }
-    // });
-  }
+    if (pointerLock) {
+      document.onpointerlockchange = () => {
+        this.pointerLock = document.pointerLockElement;
+      };
 
-  onMouseMove(e) {
-    if (this.pointerLock) {
-      let mouseMoveCommands = this.commands.filter(
-        (command) => command.handler instanceof CommandMouseMove
-      );
-
-      mouseMoveCommands.forEach((command) => {
-        command.handler.execute(e);
+      document.body.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        if (e.which !== 3) {
+          await document.body.requestPointerLock({
+            unadjustedMovement: true,
+          });
+        }
       });
     }
   }
 
-  onKeyUp(e) {
+  #onClick(e) {
+    e.preventDefault();
+    let onClickCommands = this.commands.filter(
+      (command) => command instanceof CommandClick
+    );
+    onClickCommands.forEach((command) => {
+      command.execute({ mouse: this.mouse });
+    });
+  }
+
+  #onMouseMove(e) {
+    this.mouse.x = e.clientX;
+    this.mouse.y = e.clientY;
+
+    if (this.pointerLock) {
+      let mouseMoveCommands = this.commands.filter(
+        (command) => command instanceof CommandMouseMove
+      );
+
+      mouseMoveCommands.forEach((command) => {
+        command.execute(e);
+      });
+    }
+  }
+
+  #onKeyUp(e) {
     if (this.stack.includes(e.code)) {
       let foundIndex = this.stack.findIndex((s) => s === e.code);
       if (foundIndex > -1) {
@@ -51,61 +72,61 @@ class Controls {
 
     let toggleCommands = this.commands.filter(
       (command) =>
-        command.handler instanceof CommandToggle &&
+        command instanceof CommandToggle &&
         e.code === command.key &&
-        command.handler.executed
+        command.executed
     );
     toggleCommands.forEach((command) => {
-      command.handler.executed = false;
-      command.handler.release();
+      command.executed = false;
+      command.release();
     });
 
     let onceCommands = this.commands.filter(
       (command) =>
-        command.handler instanceof CommandOnce &&
+        command instanceof CommandOnce &&
         e.code === command.key &&
-        command.handler.executed
+        command.executed
     );
     onceCommands.forEach((command) => {
-      command.handler.executed = false;
+      command.executed = false;
     });
   }
 
-  onKeyDown(e) {
+  #onKeyDown(e) {
     if (!this.stack.includes(e.code)) {
       this.stack.push(e.code);
     }
 
     let toggleCommands = this.commands.filter(
       (command) =>
-        command.handler instanceof CommandToggle &&
+        command instanceof CommandToggle &&
         e.code === command.key &&
-        !command.handler.executed
+        !command.executed
     );
     toggleCommands.forEach((command) => {
-      command.handler.executed = true;
-      command.handler.execute();
+      command.executed = true;
+      command.execute();
     });
 
     let onceCommands = this.commands.filter(
       (command) =>
-        command.handler instanceof CommandOnce &&
+        command instanceof CommandOnce &&
         e.code === command.key &&
-        !command.handler.executed
+        !command.executed
     );
     onceCommands.forEach((command) => {
-      command.handler.executed = true;
-      command.handler.execute();
+      command.executed = true;
+      command.execute();
     });
   }
 
-  registerCommand(key, handler) {
-    let command = {
-      key,
-      handler,
-    };
-    if (this.commands.some((command) => command.key === key)) {
-      console.warn(`Command conflict detected on key : ${key}`);
+  registerCommand(command) {
+    if (
+      this.commands.some(
+        (existingCommand) => existingCommand.key === command.key
+      )
+    ) {
+      console.warn(`Command conflict detected on key : ${command.key}`);
     }
     this.commands.push(command);
   }
@@ -113,12 +134,11 @@ class Controls {
   update(deltaTime) {
     let holdCommands = this.commands.filter(
       (command) =>
-        command.handler instanceof CommandHold &&
-        this.stack.includes(command.key)
+        command instanceof CommandHold && this.stack.includes(command.key)
     );
 
     holdCommands.forEach((command) => {
-      command.handler.execute(deltaTime);
+      command.execute(deltaTime);
     });
   }
 }

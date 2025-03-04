@@ -1,8 +1,13 @@
-import CommandOnce from "@/engine/commands/CommandOnce"
+import CommandOnce from "@/Engine/Commands/CommandOnce";
 
 class Eat extends CommandOnce {
+  constructor(entity) {
+    super();
+    this.entity = entity;
+  }
+
   execute() {
-    this.entity.food += 1
+    this.entity.food += 1;
   }
 }
 

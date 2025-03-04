@@ -1,4 +1,4 @@
-import UndefinedError from "@/application/errors/UndefinedError";
+import UndefinedError from "@/Application/errors/UndefinedError";
 import Observer from "./Observer"
 import Entity from "./Entity"
 

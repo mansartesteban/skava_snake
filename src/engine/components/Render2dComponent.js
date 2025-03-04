@@ -1,4 +1,4 @@
-import ImplementError from "@errors/ImplementError"
+import ImplementError from "@/Application/errors/ImplementError"
 import Component from "../Component"
 
 

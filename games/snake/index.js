@@ -1,5 +1,6 @@
-import Project from "@/engine/Project"
-import SnakeScene from "./scenes/game/SnakeScene"
+import Project from "@/Engine/Project"
+import SnakeScene from "./Scenes/Game/SnakeScene"
+import MainMenu from "./Scenes/MainMenu/MainMenu"
 
 class Snake extends Project {
     constructor() {
@@ -7,8 +8,10 @@ class Snake extends Project {
     }
   
     setup() { 
-      let scene = new SnakeScene();
-      this.addScene(scene);
+      // let scene = new SnakeScene();
+      let mainMenu = new MainMenu();
+      // this.addScene(scene);
+      this.addScene(mainMenu);
     }
   
     loop(tick) {}

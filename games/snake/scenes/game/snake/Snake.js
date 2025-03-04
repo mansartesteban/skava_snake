@@ -1,65 +1,59 @@
-import Entity from "@/engine/Entity";
+import Entity from "@/Engine/Entity";
 import SnakePhysics from "./SnakePhysics";
-import Vector2 from "@/engine/lib/Vector2";
-import RGB from "@/engine/lib/RGB";
+import Vector2 from "@/Engine/Lib/Vector2";
+import RGB from "@/Engine/Lib/RGB";
+import SnakeRender from "./SnakeRender";
+import EyeRender from "./EyeRender";
 
 class Snake extends Entity {
   speed = 0;
   food = 0;
   initialLength = 3;
 
-  positions = []
+  positions = [];
   direction = new Vector2();
 
   options = {
-    size: new Vector2(1, 1),
+    size: 1,
     color: RGB.Red,
+    position: new Vector2(),
   };
 
   setup() {
-    this.addComponent(new SnakePhysics());
-    for (let i = 0 ; i < this.initialLength ; i++) {
-
+    for (let i = 0; i < this.initialLength; i++) {
       let position = {
         nextPosition: new Vector2(),
         direction: new Vector2(1, 0),
         position: null,
         lastPosition: null,
-        hasCrossedScreen: false
-      }
-      position.position = new Vector2(
-        -this.scene.worldManager.map.options.subdivisions / 2  - i + 4,
-        0
-      )
+        hasCrossedScreen: false,
+      };
       if (i > 0) {
-        position.nextPosition = this.positions[i - 1].position
+        position.position = new Vector2(
+          this.options.position.x - i,
+          this.options.position.y
+        );
+        position.nextPosition = this.positions[i - 1].position;
       } else {
-        position.nextPosition = position.position.clone().add(position.direction)
+        position.position = this.options.position.clone();
+        position.nextPosition = position.position
+          .clone()
+          .add(position.direction);
       }
       position.lastPosition = position.position.clone().sub(new Vector2(1, 0));
       this.positions.push(position);
     }
-
+    this.addComponent(new SnakeRender());
+    this.addComponent(new SnakePhysics());
+    this.addComponent(new EyeRender());
   }
 
   loop() {
     let foodHandler = this.scene.worldManager.get("food-handler");
 
     if (foodHandler.isOnFood(this.positions[0].position)) {
-      console.log("fooooood")
       this.food++;
       foodHandler.regenerate();
-    }
-
-
-    while (this.positions.length < this.food + this.initialLength) {
-      let last = this.positions[this.positions.length -1]
-      this.positions.push({
-        nextPosition: last.nextPosition,
-        direction: last.direction,
-        position: last.position,
-        lastPosition: last.position
-      });
     }
   }
 }

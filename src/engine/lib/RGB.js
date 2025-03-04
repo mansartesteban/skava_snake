@@ -1,26 +1,26 @@
-import { clamp, mapRange } from "./Numeric"
+import { clamp, mapRange } from "./Numeric";
 
 /**
  * A helper class to handle colors with rgba channels
  */
 class RGB {
-  static Black = new RGB(0, 0, 0);
-  static White = new RGB(0xff, 0xff, 0xff);
-  static Grey = new RGB(0x7f, 0x7f, 0x7f);
-  static LightGrey = new RGB(0xbf, 0xbf, 0xbf);
-  static DarkGrey = new RGB(0x3f, 0x3f, 0x3f);
-  static Red = new RGB(0xff, 0, 0);
-  static Green = new RGB(0, 0xff, 0);
-  static Blue = new RGB(0, 0, 0xff);
-  static Yellow = new RGB(0xff, 0xff, 0);
-  static Cyan = new RGB(0, 0xff, 0xff);
-  static Fuchsia = new RGB(0xff, 0, 0xff);
+  static Black = new RGB(0x000000);
+  static White = new RGB(0xffffff);
+  static Grey = new RGB(0x7f7f7f);
+  static LightGrey = new RGB(0xbfbfbf);
+  static DarkGrey = new RGB(0x3f3f3f);
+  static Red = new RGB(0xff0000);
+  static Green = new RGB(0x00ff00);
+  static Blue = new RGB(0x0000ff);
+  static Yellow = new RGB(0xffff00);
+  static Cyan = new RGB(0x00ffff);
+  static Fuchsia = new RGB(0xff00ff);
 
   #r = 0;
   #g = 0;
   #b = 0;
 
-  #opacity = 1;
+  #opacity = 255;
 
   /**
    * @param r The red value of this color from 0 to 255
@@ -28,11 +28,22 @@ class RGB {
    * @param b The blue value of this color from 0 to 255
    * @param opacity The opacity value of this color from 0 to 1
    */
-  constructor(r = 0, g = 0, b = 0, opacity = 1) {
-    this.#r = r;
-    this.#g = g;
-    this.#b = b;
-    this.#opacity = opacity;
+  constructor(r, g, b, opacity) {
+    if (typeof r === "number" && g === undefined && b === undefined) {
+      let hex = r;
+
+      // Format RGB standard (ex: 0xFF8800)
+      this.#r = (hex >> 16) & 0xff;
+      this.#g = (hex >> 8) & 0xff;
+      this.#b = hex & 0xff;
+      this.#opacity = 255;
+    } else {
+      // Cas normal avec r, g, b séparés
+      this.#r = r ?? this.#r;
+      this.#g = g ?? this.#g;
+      this.#b = b ?? this.#b;
+      this.#opacity = opacity ?? this.#opacity;
+    }
   }
 
   /**
@@ -88,7 +99,7 @@ class RGB {
    * Sets the opacity channel from 0 to 1
    */
   set opacity(opacity) {
-    this.#opacity = clamp(opacity, 0, 1);
+    this.#opacity = opacity;
   }
 
   /**
@@ -107,9 +118,7 @@ class RGB {
       parseInt(this.r.toFixed(0)).toString(16).padStart(2, "0") +
       parseInt(this.g.toFixed(0)).toString(16).padStart(2, "0") +
       parseInt(this.b.toFixed(0)).toString(16).padStart(2, "0") +
-      parseInt(mapRange(this.opacity, 0, 1, 0, 255).toFixed(0))
-        .toString(16)
-        .padStart(2, "0")
+      parseInt(this.opacity.toFixed(0)).toString(16).padStart(2, "0")
     );
   }
 
@@ -124,14 +133,14 @@ class RGB {
         this.r + color.r,
         this.g + color.g,
         this.b + color.b,
-        this.opacity + color.opacity
+        this.opacity / 0xff + color.opacity / 0xff
       );
     } else if (typeof color === "number") {
       return new RGB(
         this.r + color,
         this.g + color,
         this.b + color,
-        this.opacity + color
+        this.opacity / 0xff + color / 0xff
       );
     } else {
       throw (
@@ -153,13 +162,13 @@ class RGB {
         Math.floor((this.r * color.r) / 0xff),
         Math.floor((this.g * color.g) / 0xff),
         Math.floor((this.b * color.b) / 0xff),
-        Math.floor(this.opacity * color.opacity)
+        Math.floor((this.opacity / 0xff) * (color.opacity / 0xff))
       );
     } else if (typeof color === "number") {
       return new RGB(
         this.r * color,
         this.g * color,
-        this.b * color,
+        this.b * color
         // this.opacity * color
       );
     } else {
@@ -185,34 +194,34 @@ class RGB {
     this.g = (1 - weight) * this.g + weight * color.g;
     this.b = (1 - weight) * this.b + weight * color.b;
     if (withOpacity) {
-      this.opacity = (1 - weight) * this.opacity + weight * color.opacity;
+      this.opacity =
+        (1 - weight) * (this.opacity / 0xff) + weight * (color.opacity / 0xff);
     }
     return this;
   }
 
-    /**
+  /**
    * Returns a clone of this vector
    * @returns RGB
    */
-    clone() {
-      return new RGB(this.r, this.g, this.b, this.opacity);
-    }
-  
-    /**
-     * Copies the coordinates of a given vector to this vector
-     * @param v The vector to be copied
-     * @returns this Returns this for methods chaining
-     */
-    copy(v) {
-      if (v) {
-        this.r = v.r;
-        this.g = v.g;
-        this.b = v.b;
-        this.opacity = v.opacity;
-      }
-      return this;
-    }
+  clone() {
+    return new RGB(this.r, this.g, this.b, this.opacity);
+  }
 
+  /**
+   * Copies the coordinates of a given vector to this vector
+   * @param v The vector to be copied
+   * @returns this Returns this for methods chaining
+   */
+  copy(v) {
+    if (v) {
+      this.r = v.r;
+      this.g = v.g;
+      this.b = v.b;
+      this.opacity = v.opacity;
+    }
+    return this;
+  }
 }
 
 export default RGB;

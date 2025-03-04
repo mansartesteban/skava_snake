@@ -1,12 +1,8 @@
-import ImplementError from "@errors/ImplementError"
+import ImplementError from "@/Application/errors/ImplementError"
 
 class Command {
-    entity = null;
-
-    constructor(entity) {
-        this.entity = entity
-    }
-
+    key;
+    
     execute() {
         throw new ImplementError("execute", "Command")
     }

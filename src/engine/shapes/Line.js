@@ -1,6 +1,6 @@
-import RGB from "../lib/RGB"
-import Vector2 from "../lib/Vector2"
-import Draw from "./Draw"
+import RGB from "../Lib/RGB";
+import Vector2 from "../Lib/Vector2";
+import Draw from "./Draw";
 
 class Line {
   #from;
@@ -9,18 +9,22 @@ class Line {
   #dashes;
   #thickness;
 
+  #options;
+
   constructor(
     from = new Vector2(),
     to = new Vector2(),
     color = new RGB(),
     thickness = 1,
-    dashes = []
+    dashes = [],
+    options = {}
   ) {
     this.#from = from;
     this.#to = to;
     this.#color = color;
     this.#dashes = dashes;
     this.#thickness = thickness;
+    this.#options = options;
   }
 
   get from() {
@@ -38,6 +42,9 @@ class Line {
   get thickness() {
     return this.#thickness;
   }
+  get options() {
+    return this.#options;
+  }
 
   set from(from) {
     this.#from = from;
@@ -54,6 +61,9 @@ class Line {
   set thickness(thickness) {
     this.#thickness = thickness;
   }
+  set options(options) {
+    this.#options = options;
+  }
 
   draw(viewer) {
     let ctx = viewer.ctx;
@@ -61,6 +71,14 @@ class Line {
       const dashes = this.#dashes.map((dash) =>
         typeof dash === "string" ? parseInt(dash) : dash
       );
+
+      if (this.#options.shadowBlur) {
+        ctx.shadowBlur = this.#options.shadowBlur;
+      }
+      if (this.#options.shadowColor) {
+        ctx.shadowColor = this.#options.shadowColor._toString;
+      }
+
       ctx.lineCap = "round";
       ctx.setLineDash(dashes);
       ctx.strokeStyle = this.color._toString;
@@ -69,6 +87,13 @@ class Line {
       ctx.moveTo(this.from.x, this.from.y);
       ctx.lineTo(this.to.x, this.to.y);
       ctx.stroke();
+
+      if (this.#options.shadowBlur) {
+        ctx.shadowBlur = 0;
+      }
+      if (this.#options.shadowColor) {
+        ctx.shadowColor = "";
+      }
 
       return ["strokeStyle", "setLineDash", "lineWidth"];
     });

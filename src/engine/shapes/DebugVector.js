@@ -1,7 +1,7 @@
-import { clamp } from "../lib/Numeric"
-import RGB from "../lib/RGB"
-import Rotation from "../lib/Rotation"
-import Vector2 from "../lib/Vector2"
+import { clamp } from "../Lib/Numeric"
+import RGB from "../Lib/RGB"
+import Rotation from "../Lib/Rotation"
+import Vector2 from "../Lib/Vector2"
 import Draw from "./Draw"
 
 class DebugVector {

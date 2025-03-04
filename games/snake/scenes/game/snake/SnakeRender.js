@@ -1,11 +1,11 @@
-import Render2DComponent from "@/engine/components/Render2dComponent";
-import Line from "@/engine/shapes/Line";
-import RGB from "@/engine/lib/RGB";
-import MultiLine from "@/engine/shapes/MultiLine";
-import DebugVector from "@/engine/shapes/DebugVector";
-import Vector2 from "@/engine/lib/Vector2";
+import Render2DComponent from "@/Engine/Components/Render2dComponent";
+import Line from "@/Engine/Shapes/Line";
+import RGB from "@/Engine/Lib/RGB";
+import MultiLine from "@/Engine/Shapes/MultiLine";
+import DebugVector from "@/Engine/Shapes/DebugVector";
+import Vector2 from "@/Engine/Lib/Vector2";
 import EyeRender from "./EyeRender";
-import { lerp } from "@/engine/lib/Numeric";
+import { lerp } from "@/Engine/Lib/Numeric";
 
 class SnakeRender extends Render2DComponent {
   color = RGB.Red;
@@ -44,17 +44,23 @@ class SnakeRender extends Render2DComponent {
             this.entity.positions.length - 1
           ].nextPosition.clone(),
           this.entity.options.color,
-          this.entity.scene.worldManager.map.tileSize
+          this.entity.options.size,
+          [],
+          {
+            shadowColor: new RGB(0, 0, 0, 0.33),
+            shadowBlur: 6,
+          }
         )
       );
     }
 
-    for (let i = 0; i < this.bodies.length; i++) {
+    for (let j = 0; j < this.bodies.length; j++) {
+      let i =this.bodies.length - 1 - j
       let body = this.bodies[i];
 
       body.thickness = lerp(
-        this.entity.scene.worldManager.map.tileSize,
-        this.entity.scene.worldManager.map.tileSize / 2,
+        this.entity.options.size,
+        this.entity.options.size / 2,
         i / this.bodies.length
       );
 

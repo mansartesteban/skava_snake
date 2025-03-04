@@ -1,6 +1,6 @@
-import Observer from "@/engine/Observer";
+import Observer from "@/Engine/Observer";
 import Scene from "./Scene";
-import ImplementError from "@/application/errors/ImplementError";
+import ImplementError from "@/Application/errors/ImplementError";
 
 const Events = {
   INITIALIZED: "INITIALIZED",
@@ -9,7 +9,7 @@ const Events = {
 class Project {
   scenes = [];
   options = {
-    name: "New project",
+    name: "Skava - Snake",
     mountOn: "#app",
     isDev: false
   };
@@ -39,6 +39,9 @@ class Project {
   }
 
   update(deltaTime, currentTime) {
+    // TODO Instead of looping over engine loop and potentially execute some objects which are not set-up
+    // execute scene if scene "isReady"
+    // AH bah apparement c'est déjà ce que je fais ... je suis un boss :p
     this.scenes.forEach((scene) => scene.update(deltaTime, currentTime));
     this.loop(deltaTime, currentTime);
   }

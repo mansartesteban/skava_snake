@@ -1,4 +1,4 @@
-import ImplementError from "@/application/errors/ImplementError"
+import ImplementError from "@/Application/errors/ImplementError"
 
 class Viewer {
   options;
