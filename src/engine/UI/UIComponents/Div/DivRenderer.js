@@ -21,6 +21,7 @@ class DivRenderer extends UIRenderer {
   render(viewer) {
     this.shape.position = this.uiComponent.transform.position
     this.shape.size = this.uiComponent.transform.size
+    this.shape.rotation = this.uiComponent.transform.rotation
 
     this.shape.draw(viewer);
   }

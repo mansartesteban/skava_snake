@@ -30,9 +30,10 @@ class Entity {
 
   update(deltaTime, currentTime) {
     this.loop();
-    this.components.forEach((component) =>
+    this.components.forEach((component) => {
       component.updateComponent(deltaTime, currentTime)
-  );
+    }
+    );
   }
 
   loop() {}

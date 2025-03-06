@@ -1,27 +1,36 @@
 class UIConstraint {
   #value;
   #options;
-  #constraintManager;
+  #constraintHandler;
+  #setup = false;
 
   constructor(value, options) {
     this.#value = value;
-    this.#options = options
+    this.#options = options;
   }
 
   get value() {
     return this.#value;
   }
 
-  get constraintManager() {
-    return this.#constraintManager
+  get constraintHandler() {
+    return this.#constraintHandler;
   }
 
   get options() {
-    return this.#options
+    return this.#options;
   }
 
-  set constraintManager(constraintManager) {
-    this.#constraintManager = constraintManager;
+  get setup() {
+    return this.#setup;
+  }
+
+  set setup(setup) {
+    this.#setup = setup;
+  }
+
+  set constraintHandler(constraintHandler) {
+    this.#constraintHandler = constraintHandler;
   }
 }
 

@@ -1,9 +1,12 @@
 import ImplementError from "@errors/ImplementError";
 import UIConstraintBlock from "./UIConstraintBlock";
 import UIStyle from "./UIStyle";
+import UIConstraintHandler from "./UIConstraintLayout";
+import { getProperties } from "@/Engine/Lib/Objet"
 
 class UIRenderer {
   uiComponent;
+  datas
 
   setup() {
     let style = this.uiComponent.root.getComponent(UIStyle);
@@ -17,21 +20,10 @@ class UIRenderer {
     }
   }
 
-  getExposedPropertiesWithValues(instance) {
-    let proto = Object.getPrototypeOf(instance);
-    let descriptors = Object.getOwnPropertyDescriptors(proto);
-    let getters = Object.keys(descriptors).filter(
-      (key) => typeof descriptors[key].get === "function"
-    );
 
-    return getters.reduce((acc, key) => {
-      acc[key] = instance[key]; // Accède au getter
-      return acc;
-    }, {});
-  }
 
   initializeStyle(thisStyle, style) {
-    let styleValues = this.getExposedPropertiesWithValues(style);
+    let styleValues = getProperties(style);
     Object.keys(styleValues).forEach((prop) => {
       if (prop !== "inherit") {
         thisStyle[prop] = thisStyle[prop] || styleValues[prop];
@@ -40,47 +32,82 @@ class UIRenderer {
   }
 
   calculateConstraint() {
-    let constraints = this.uiComponent.getComponent(UIConstraintBlock);
+    let constraints = this.uiComponent.getComponent(UIConstraintHandler);
 
-    let widthConstraint = constraints.widthConstraint;
-    if (widthConstraint) {
-      widthConstraint.execute(
-        this.uiComponent.parent.transform,
-        this.uiComponent.transform,
-        "size",
-        "x"
-      );
-    }
+    if (constraints) {
+      let widthConstraint = constraints.widthConstraint;
+      if (widthConstraint) {
+        if (
+          widthConstraint.options?.refresh === undefined ||
+          widthConstraint.options?.refresh === true ||
+          !widthConstraint.setup
+        ) {
+          widthConstraint.execute(this.uiComponent, "size", "x");
+          widthConstraint.setup = true;
+        }
+      }
 
-    let heightConstraint = constraints.heightConstraint;
-    if (heightConstraint) {
-      heightConstraint.execute(
-        this.uiComponent.parent.transform,
-        this.uiComponent.transform,
-        "size",
-        "y"
-      );
-    }
+      let heightConstraint = constraints.heightConstraint;
+      if (heightConstraint) {
+        if (
+          heightConstraint.options?.refresh === undefined ||
+          heightConstraint.options?.refresh === true ||
+          !heightConstraint.setup
+        ) {
+          heightConstraint.execute(this.uiComponent, "size", "y");
+          heightConstraint.setup = true;
+        }
+      }
 
-    let xConstraint = constraints.xConstraint;
-    if (xConstraint) {
-      xConstraint.execute(
-        this.uiComponent.parent.transform,
-        this.uiComponent.transform,
-        "position",
-        "x"
-      );
-    }
+      let xConstraint = constraints.xConstraint;
+      if (xConstraint) {
+        if (
+          xConstraint.options?.refresh === undefined ||
+          xConstraint.options?.refresh === true ||
+          !xConstraint.setup
+        ) {
+          xConstraint.execute(this.uiComponent, "position", "x");
+          xConstraint.setup = true;
+        }
+      }
 
-    let yConstraint = constraints.yConstraint;
-    if (yConstraint) {
-      yConstraint.execute(
-        this.uiComponent.parent.transform,
-        this.uiComponent.transform,
-        "position",
-        "y"
-      );
+      let yConstraint = constraints.yConstraint;
+      if (yConstraint) {
+        if (
+          yConstraint.options?.refresh === undefined ||
+          yConstraint.options?.refresh === true ||
+          !yConstraint.setup
+        ) {
+          yConstraint.execute(this.uiComponent, "position", "y");
+          yConstraint.setup = true;
+        }
+      }
+
+      // let paddingConstraint = constraints.paddingConstraint;
+      // if (paddingConstraint) {
+      //   if (
+      //     paddingConstraint.options?.refresh === undefined ||
+      //     paddingConstraint.options?.refresh === true ||
+      //     !paddingConstraint.setup
+      //   ) {
+      //     paddingConstraint.execute(this.uiComponent, "padding");
+      //     paddingConstraint.setup = true;
+      //   }
+      // }
+
+      let marginConstraint = constraints.marginConstraint;
+      if (marginConstraint) {
+        if (
+          marginConstraint.options?.refresh === undefined ||
+          marginConstraint.options?.refresh === true ||
+          !marginConstraint.setup
+        ) {
+          marginConstraint.execute(this.uiComponent, "margin");
+          marginConstraint.setup = true;
+        }
+      }
     }
+    
   }
 
   loop() {

@@ -1,23 +1,30 @@
 import WrongInstanceError from "@errors/WrongInstanceError";
 import UIConstraint from "./UIConstraint";
-import Component from "@/Engine/Component"
+import Component from "@/Engine/Component";
 
-class UIConstraintBlock extends Component {
+class UIConstraintHandler extends Component {
   #xConstraint;
   #yConstraint;
   #widthConstraint;
   #heightConstraint;
-  #paddingConstraint;
   #marginConstraint;
+  #paddingConstraint;
 
-  constructor(xConstraint, yConstraint, widthConstraint, heightConstraint, paddingConstraint, marginConstraint) {
+  constructor(
+    xConstraint,
+    yConstraint,
+    widthConstraint,
+    heightConstraint,
+    marginConstraint,
+    paddingConstraint
+  ) {
     super();
-    this.setX(xConstraint)
-    this.setY(yConstraint)
-    this.setWidth(widthConstraint)
-    this.setHeight(heightConstraint)
-    this.setPadding(paddingConstraint)
-    this.setMargin(marginConstraint)
+    xConstraint && this.setX(xConstraint);
+    yConstraint && this.setY(yConstraint);
+    widthConstraint && this.setWidth(widthConstraint);
+    heightConstraint && this.setHeight(heightConstraint);
+    marginConstraint && this.setMargin(marginConstraint);
+    paddingConstraint && this.setPadding(paddingConstraint);
   }
 
   get xConstraint() {
@@ -32,11 +39,11 @@ class UIConstraintBlock extends Component {
   get heightConstraint() {
     return this.#heightConstraint;
   }
-  get paddingConstraint() {
-    return this.#paddingConstraint
-  }
   get marginConstraint() {
-    return this.#marginConstraint
+    return this.#marginConstraint;
+  }
+  get paddingConstraint() {
+    return this.#paddingConstraint;
   }
 
   setup() {}
@@ -46,7 +53,7 @@ class UIConstraintBlock extends Component {
       throw new WrongInstanceError(constraint, UIConstraint);
     }
 
-    constraint.constraintManager = this;
+    constraint.constraintHandler = this;
     this.#xConstraint = constraint;
   }
 
@@ -55,7 +62,7 @@ class UIConstraintBlock extends Component {
       throw new WrongInstanceError(constraint, UIConstraint);
     }
 
-    constraint.constraintManager = this;
+    constraint.constraintHandler = this;
     this.#yConstraint = constraint;
   }
 
@@ -64,7 +71,7 @@ class UIConstraintBlock extends Component {
       throw new WrongInstanceError(constraint, UIConstraint);
     }
 
-    constraint.constraintManager = this;
+    constraint.constraintHandler = this;
     this.#widthConstraint = constraint;
   }
 
@@ -73,17 +80,8 @@ class UIConstraintBlock extends Component {
       throw new WrongInstanceError(constraint, UIConstraint);
     }
 
-    constraint.constraintManager = this;
+    constraint.constraintHandler = this;
     this.#heightConstraint = constraint;
-  }
-
-  setPadding(constraint) {
-    if (!(constraint instanceof UIConstraint)) {
-      throw new WrongInstanceError(constraint, UIConstraint);
-    }
-
-    constraint.constraintManager = this;
-    this.#paddingConstraint = constraint;
   }
 
   setMargin(constraint) {
@@ -91,9 +89,18 @@ class UIConstraintBlock extends Component {
       throw new WrongInstanceError(constraint, UIConstraint);
     }
 
-    constraint.constraintManager = this;
+    constraint.constraintHandler = this;
     this.#marginConstraint = constraint;
+  }
+
+  setPadding(constraint) {
+    if (!(constraint instanceof UIConstraint)) {
+      throw new WrongInstanceError(constraint, UIConstraint);
+    }
+
+    constraint.constraintHandler = this;
+    this.#paddingConstraint = constraint;
   }
 }
 
-export default UIConstraintBlock;
+export default UIConstraintHandler;

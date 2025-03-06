@@ -119,6 +119,8 @@ class UIStyle extends Component {
     this.#shadowSize = shadowSize;
   }
 
+  updateComponent() {}
+
   getExposedPropertiesWithValues(instance) {
     let proto = Object.getPrototypeOf(instance);
     let descriptors = Object.getOwnPropertyDescriptors(proto);
@@ -140,7 +142,7 @@ class UIStyle extends Component {
       this.entity.addComponent(thisStyle);
     }
 
-    let styleValues = style
+    let styleValues = style;
     if (style instanceof UIStyle) {
       styleValues = this.getExposedPropertiesWithValues(style);
     }

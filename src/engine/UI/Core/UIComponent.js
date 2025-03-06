@@ -6,6 +6,7 @@ import TransformComponent from "@/Engine/Components/TransformComponent";
 import UIStyle from "./UIStyle"
 import UIManager from "./UIManager"
 import Observer from "@/Engine/Observer"
+import Vector2 from "@/Engine/Lib/Vector2"
 
 class UIComponent extends Entity {
   #renderer;
@@ -14,6 +15,10 @@ class UIComponent extends Entity {
   #root;
 
   uiManager;
+
+  datas = {
+    nextFreePosition: new Vector2()
+  }
 
   eventObserver = new Observer({
     click: "click"
@@ -57,11 +62,13 @@ class UIComponent extends Entity {
     child.root = this.#root;
     child.scene = this.scene
     child.uiManager = this.uiManager
+    this.scene.add(child)
     child.setup()
     this.#children.push(child);
     if (this.uiManager && this.uiManager instanceof UIManager) {
       this.uiManager.add(child)
     }
+    return this;
   }
 
   setStyle(style) {
@@ -88,7 +95,7 @@ class UIComponent extends Entity {
   loop(deltaTime, currentTime) {
     this.#renderer?.loop();
     this.#renderer?.render(this.scene.viewer, deltaTime, currentTime);
-    this.#children.forEach(child => child.loop(deltaTime, currentTime))
+    // this.#children.forEach(child => child.loop(deltaTime, currentTime))
   }
 }
 export default UIComponent;

@@ -1,28 +1,25 @@
-import Controls from "@/Engine/Controls"
-import OnClick from "../Events/OnClick"
-import UIComponent from "./UIComponent"
+import Controls from "@/Engine/Controls";
+import OnClick from "../Events/OnClick";
+import UIComponent from "./UIComponent";
 
 class UIManager {
+  #elements = [];
+  controls;
 
-    #elements = []
-controls;
+  constructor(controls) {
+    this.controls = new Controls();
+    this.controls.registerCommand(new OnClick(this.#elements));
+  }
+  get elements() {
+    return this.#elements;
+  }
 
-
-constructor(controls) {
-    this.controls = new Controls()
-    this.controls.registerCommand(new OnClick(this.#elements))
-}
-get elements() {
-    return this.#elements
-}
-
-    add(element) {
-        if (element instanceof UIComponent) {
-            element.uiManager = this
-            this.#elements.unshift(element)
-        }
+  add(element) {
+    if (element instanceof UIComponent) {
+      element.uiManager = this;
+      this.#elements.unshift(element);
     }
-
+  }
 }
 
-export default UIManager
+export default UIManager;
