@@ -1,5 +1,5 @@
-import Observer from "./Observer"
-import Timer from "./Lib/Time/Timer"
+import Observer from "./Observer";
+import Timer from "./Lib/Time/Timer";
 
 const Events = {
   INITIALIZED: "INITIALIZED",
@@ -8,7 +8,7 @@ const Events = {
 class Engine {
   project;
   observer;
-  lastUpdate = 0
+  lastUpdate = 0;
 
   fpsMeter;
 
@@ -17,10 +17,10 @@ class Engine {
     this.observer.$on(Events.INITIALIZED, this.loop.bind(this));
     this.timer = new Timer();
 
-    this.fpsMeter = document.createElement("div")
-    this.fpsMeter.classList.add("fps-meter")
-    this.fpsMeter.setAttribute("last-update", "0")
-    document.body.appendChild(this.fpsMeter)
+    this.fpsMeter = document.createElement("div");
+    this.fpsMeter.classList.add("fps-meter");
+    this.fpsMeter.setAttribute("last-update", "0");
+    document.body.appendChild(this.fpsMeter);
   }
 
   setProject(project) {
@@ -29,19 +29,21 @@ class Engine {
   }
 
   async loop(currentTime = 0) {
-    let deltaTimeFps = (currentTime - parseFloat(this.fpsMeter.getAttribute("last-update"))) / 1000
-    let deltaTime = (currentTime - this.lastUpdate) / 1000
-    
-    if (deltaTimeFps > .5) {
-      this.fpsMeter.innerText = (1 / deltaTime).toFixed()
-      this.fpsMeter.setAttribute("last-update", currentTime+"")
+    let deltaTimeFps =
+      (currentTime - parseFloat(this.fpsMeter.getAttribute("last-update"))) /
+      1000;
+    let deltaTime = (currentTime - this.lastUpdate) / 1000;
+
+    if (deltaTimeFps > 0.5) {
+      this.fpsMeter.innerText = (1 / deltaTime).toFixed();
+      this.fpsMeter.setAttribute("last-update", currentTime + "");
     }
     if (this.project) {
       this.project.update(deltaTime, currentTime);
     }
-    // await new Promise(r => setTimeout(r, 1000))
-    this.lastUpdate = currentTime
-      window.requestAnimationFrame(this.loop.bind(this));
+    // await new Promise((r) => setTimeout(r, 1000));
+    this.lastUpdate = currentTime;
+    window.requestAnimationFrame(this.loop.bind(this));
   }
 }
 

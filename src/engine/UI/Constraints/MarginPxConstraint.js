@@ -20,10 +20,7 @@ class MarginPxConstraint extends UIConstraint {
         component.transform.size.x -= value[1] + value[3];
         component.transform.position.y += value[0];
         component.transform.size.y -= value[0] + value[2];
-
-        console.log("here")
       }
-
     } else if (property === "padding") {
     }
   }

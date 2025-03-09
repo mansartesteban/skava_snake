@@ -1,12 +1,11 @@
 import EntityManager from "./EntityManager";
-import Vector2 from "./Lib/Vector2"
-import UIManager from "./UI/Core/UIManager"
-import Viewer2d from "./Viewers/Viewer2d"
+import Vector2 from "./Lib/Vector2";
+import UIManager from "./UI/Core/UIManager";
+import Viewer2d from "./Viewers/Viewer2d";
 
 class Scene {
   setupFinished = false;
 
-  threeScne;
   name = "";
   entityManager = null;
   viewer;
@@ -21,17 +20,16 @@ class Scene {
     let app = document.querySelector(mountOn);
     this.viewer = new Viewer2d(app, {
       size: new Vector2(window.innerWidth, window.innerHeight),
-      ...options
+      ...options,
     });
   }
-  
-  add(entity) {
-    entity.scene = this
-    this.entityManager.add(entity);
+
+  add(entity, executeSetup) {
+    this.entityManager.add(entity, executeSetup);
   }
 
   remove(entityToDelete) {
-    this.entityManager.delete(entityToDelete)
+    this.entityManager.delete(entityToDelete);
   }
 
   update(deltaTime, currentTime) {

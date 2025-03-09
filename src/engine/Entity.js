@@ -1,12 +1,15 @@
 import Component from "./Component";
 import { v4 as uuid } from "uuid";
 import TransformComponent from "./Components/TransformComponent";
+import Observer from "./Observer";
 
 class Entity {
   uuid = uuid();
   components = new Map();
   transform = new TransformComponent();
   scene;
+
+  observer = new Observer({ SETUP_FINISHED: "SETUP_FINISHED" });
 
   constructor(...components) {
     components.forEach((component) => this.addComponent(component));
@@ -31,9 +34,8 @@ class Entity {
   update(deltaTime, currentTime) {
     this.loop();
     this.components.forEach((component) => {
-      component.updateComponent(deltaTime, currentTime)
-    }
-    );
+      component.updateComponent(deltaTime, currentTime);
+    });
   }
 
   loop() {}

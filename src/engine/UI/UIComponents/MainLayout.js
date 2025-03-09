@@ -1,10 +1,28 @@
 import UIComponent from "../Core/UIComponent";
+import UIStyle from "../Core/UIStyle";
 
 class MainLayout extends UIComponent {
-
+  toProcess = [];
   setup() {
     this.root = this;
+    super.setup();
     this.copyViewerTransform();
+  }
+
+  addChild(component) {
+    component.root = this.root;
+    component.scene = this.scene;
+
+    component.getComponent(UIStyle).setDefaultStyle(this.getComponent(UIStyle));
+    this.scene.add(component);
+    while (component.pendingTree.length > 0) {
+      let toHandle = component.pendingTree.shift();
+      toHandle.getComponent(UIStyle).styleHandler.indexInParent =
+        component.tree.length;
+      component.tree.push(toHandle);
+    }
+    component.tree.forEach((ch) => this.addChild(ch));
+    return this;
   }
 
   copyViewerTransform() {
@@ -15,8 +33,8 @@ class MainLayout extends UIComponent {
   }
 
   loop() {
-      this.copyViewerTransform();
-      super.loop()
+    this.copyViewerTransform();
+    super.loop();
   }
 }
 

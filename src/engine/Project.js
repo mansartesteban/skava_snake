@@ -11,7 +11,7 @@ class Project {
   options = {
     name: "Skava - Snake",
     mountOn: "#app",
-    isDev: false
+    isDev: false,
   };
   loopCallback;
   observer;
@@ -25,7 +25,7 @@ class Project {
   addScene(scene, options) {
     scene.createViewer(this.options.mountOn);
     Promise.resolve(scene.setup()).then(() => {
-      scene.setupFinished = true
+      scene.setupFinished = true;
     });
     this.scenes.push(scene);
   }
@@ -39,13 +39,10 @@ class Project {
   }
 
   update(deltaTime, currentTime) {
-    // TODO Instead of looping over engine loop and potentially execute some objects which are not set-up
-    // execute scene if scene "isReady"
-    // AH bah apparement c'est déjà ce que je fais ... je suis un boss :p
     this.scenes.forEach((scene) => scene.update(deltaTime, currentTime));
     this.loop(deltaTime, currentTime);
   }
-  loop(deltaTime,currentTime) {}
+  loop(deltaTime, currentTime) {}
 }
 
 export default Project;

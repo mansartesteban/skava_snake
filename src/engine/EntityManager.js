@@ -1,6 +1,6 @@
 import UndefinedError from "@/Application/errors/UndefinedError";
-import Observer from "./Observer"
-import Entity from "./Entity"
+import Observer from "./Observer";
+import Entity from "./Entity";
 
 class EntityManager {
   static EVENTS = Object.freeze({
@@ -47,12 +47,16 @@ class EntityManager {
     }
   }
 
-  add(entity) {
-
+  add(entity, executeSetup = true) {
+    entity.scene = this.scene;
     if (entity.children) {
       entity.children.forEach((child) => this.add(child));
     }
-    entity.setup()
+    if (executeSetup) {
+      Promise.resolve(entity.setup()).then(() => {
+        entity.observer.$emit("SETUP_FINISHED");
+      });
+    }
     this.entities.push(entity);
 
     this.observer.$emit(EntityManager.EVENTS.ENTITY_ADDED, entity);
