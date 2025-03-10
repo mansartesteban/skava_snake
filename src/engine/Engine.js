@@ -28,6 +28,8 @@ class Engine {
     this.observer.$emit(Events.INITIALIZED);
   }
 
+  i = 0;
+
   async loop(currentTime = 0) {
     let deltaTimeFps =
       (currentTime - parseFloat(this.fpsMeter.getAttribute("last-update"))) /
@@ -43,7 +45,10 @@ class Engine {
     }
     // await new Promise((r) => setTimeout(r, 1000));
     this.lastUpdate = currentTime;
+    // this.i++;
+    // if (this.i < 4) {
     window.requestAnimationFrame(this.loop.bind(this));
+    // }
   }
 }
 

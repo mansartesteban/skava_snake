@@ -1,6 +1,8 @@
 import WrongInstanceError from "@errors/WrongInstanceError";
 import UIStyle from "./UIStyle";
+import UIComponent from "./UIComponent";
 import Vector2 from "@/Engine/Lib/Vector2";
+import { getProperties } from "@/Engine/Lib/Objet";
 
 class UIStyleHandler {
   #component;
@@ -10,8 +12,8 @@ class UIStyleHandler {
   nextPosition = new Vector2();
 
   datas = {
-    size: new Vector2(),
-    margin: [0, 0, 0, 0],
+    height: 0,
+    margin: 0,
   };
 
   lastSize = new Vector2();
@@ -63,16 +65,12 @@ class UIStyleHandler {
 
   autoHeightParent(parent, current) {
     let parentStyle = parent.getComponent(UIStyle);
-    let currentStyle = current.getComponent(UIStyle);
     if (parentStyle.height === "auto") {
-      parentStyle.styleHandler.datas.size.y =
-        currentStyle.styleHandler.getNextFreePosition(parent).y;
-      parent.transform.size.y =
-        currentStyle.styleHandler.getNextFreePosition(parent).y;
-      // TODO parent.transform.size.x = this.getNextFreePosition().x;
+      // parentStyle.styleHandler.nextPosition.y = current.nextPosition.y;
+      parent.transform.size.y = current.nextPosition.y;
     }
 
-    current = parent;
+    current = parent.getComponent(UIStyle).styleHandler;
     parent = parent.parent;
     if (
       parent &&
@@ -121,8 +119,14 @@ class UIStyleHandler {
       }
     }
 
-    this.datas.size.x = x === "auto" ? 0 : x;
-    this.datas.size.y = y === "auto" ? 0 : y;
+    this.nextPosition.x =
+      (this.lastSiblingStyleHandler?.nextPosition.x || 0) + x;
+    this.nextPosition.y =
+      (this.lastSiblingStyleHandler?.nextPosition.y || 0) + y;
+
+    if (this.#component.parent) {
+      this.autoHeightParent(this.#component.parent, this);
+    }
 
     if (this.style.margin) {
       let value = this.style.margin;
@@ -149,51 +153,23 @@ class UIStyleHandler {
           return parseFloat(val);
         }
       });
-      if (this.style.direction === "vertical") {
-        x -= value[1] + value[3];
-      } else if (this.style.direction === "horizontal") {
-        y -= value[0] + value[2];
-      }
-      this.datas.margin = value;
+      x -= value[1] + value[3];
+      y -= value[0] + value[2];
     }
 
     return new Vector2(Math.max(0, x), Math.max(0, y));
-  }
-
-  getNextFreePosition(component, index) {
-    let nextFreePosition = new Vector2();
-    if (component) {
-      let componentStyle = component.getComponent(UIStyle);
-      let children = component.tree;
-      if (index !== undefined) {
-        children = children.slice(0, index);
-      }
-      children.forEach((child) => {
-        let childDatas = child.getComponent(UIStyle).styleHandler.datas;
-        if (componentStyle.direction === "vertical") {
-          nextFreePosition.y += childDatas.size.y;
-          nextFreePosition.y += childDatas.margin[0] + childDatas.margin[2];
-        } else {
-          nextFreePosition.x += child.size.x;
-          nextFreePosition.x += childDatas.margin[1] + childDatas.margin[3];
-        }
-      });
-    }
-    return nextFreePosition;
   }
 
   calculatePosition(parentTransform) {
     let x =
       parentTransform.position.x +
       (this.style.direction === "horizontal"
-        ? this.getNextFreePosition(this.#component.parent, this.indexInParent)
-            .x || 0
+        ? this.lastSiblingStyleHandler?.nextPosition.x || 0
         : 0);
     let y =
       parentTransform.position.y +
       (this.style.direction === "vertical"
-        ? this.getNextFreePosition(this.#component.parent, this.indexInParent)
-            .y || 0
+        ? this.lastSiblingStyleHandler?.nextPosition.y || 0
         : 0);
 
     if (this.style.margin) {
@@ -237,16 +213,6 @@ class UIStyleHandler {
       this.component.transform.size = this.calculateSize(parentTransform);
       this.component.transform.position =
         this.calculatePosition(parentTransform);
-    }
-
-    if (
-      this.component.parent &&
-      this.component.parent !== this.component.root
-    ) {
-      this.autoHeightParent(
-        this.component.parent || this.component.root,
-        this.component
-      );
     }
   }
 }

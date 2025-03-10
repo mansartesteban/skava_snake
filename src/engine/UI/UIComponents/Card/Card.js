@@ -5,6 +5,7 @@ import Div from "../Div/Div";
 import RGB from "@/Engine/Lib/RGB";
 import DivRenderer from "../Div/DivRenderer";
 import Label from "../Label/Label";
+import Button from "../Button/Button";
 
 class Card extends UIComponent {
   setup() {
@@ -20,6 +21,7 @@ class Card extends UIComponent {
       {
         color: new RGB(0, 255, 255, 255),
         width: "100%",
+        // height: 40,
         margin: 20,
         borderRadius: 24,
       },
@@ -30,7 +32,6 @@ class Card extends UIComponent {
       new UIStyle({
         width: "100%",
         height: 64,
-        margin: 0,
         borderRadius: [24, 24, 0, 0],
         color: RGB.Fuchsia,
       })
@@ -38,7 +39,6 @@ class Card extends UIComponent {
     let cardBody = new Div(
       new UIStyle({
         color: RGB.Blue,
-        // height: "300px",
         width: "100%",
         borderRadius: [8],
         margin: [24],

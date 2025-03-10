@@ -17,11 +17,19 @@ class MainMenu extends Scene {
       new UIStyle({
         color: RGB.Green,
         margin: 8,
-        height: "32px",
+        height: 32,
+      })
+    );
+    let card3 = new Button(
+      new UIStyle({
+        color: RGB.Green,
+        margin: 24,
+        height: 64,
       })
     );
 
     card.addChild(card2);
+    card.addChild(card3);
     this.uiManager.mainLayout.addChild(card);
   }
 }
