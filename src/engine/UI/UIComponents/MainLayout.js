@@ -17,9 +17,12 @@ class MainLayout extends UIComponent {
     this.scene.add(component);
     while (component.pendingTree.length > 0) {
       let toHandle = component.pendingTree.shift();
-      toHandle.getComponent(UIStyle).styleHandler.indexInParent =
-        component.tree.length;
-      component.tree.push(toHandle);
+      let slot = component.slots.get(toHandle.slot) || component;
+      toHandle.component.parent = slot;
+
+      toHandle.component.getComponent(UIStyle).styleHandler.indexInParent =
+        slot.tree.length;
+      slot.tree.push(toHandle.component);
     }
     component.tree.forEach((ch) => this.addChild(ch));
     return this;

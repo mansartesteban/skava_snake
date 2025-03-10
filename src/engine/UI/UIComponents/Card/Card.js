@@ -38,16 +38,16 @@ class Card extends UIComponent {
     let cardBody = new Div(
       new UIStyle({
         color: RGB.Blue,
-        height: "300px",
+        // height: "300px",
         width: "100%",
         borderRadius: [8],
         margin: [24],
       })
     );
 
-    this.setDefaultSlot(cardBody); // TODO
     this.addChild(cardHeader);
     this.addChild(cardBody);
+    this.setDefaultSlot(cardBody); // TODO
     this.addRenderer(new DivRenderer());
   }
 }

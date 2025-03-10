@@ -11,6 +11,11 @@ class UIStyleHandler {
   indexInParent = 0;
   nextPosition = new Vector2();
 
+  datas = {
+    height: 0,
+    margin: 0,
+  };
+
   lastSize = new Vector2();
   currentSize = new Vector2();
 
@@ -61,15 +66,18 @@ class UIStyleHandler {
   autoHeightParent(parent, current) {
     let parentStyle = parent.getComponent(UIStyle);
     if (parentStyle.height === "auto") {
+      // parentStyle.styleHandler.nextPosition.y = current.nextPosition.y;
       parent.transform.size.y = current.nextPosition.y;
     }
+
+    current = parent.getComponent(UIStyle).styleHandler;
     parent = parent.parent;
     if (
       parent &&
       parent !== this.#component.root &&
       parentStyle.height === "auto"
     ) {
-      this.autoHeightParent(parent);
+      this.autoHeightParent(parent, current);
     }
   }
 

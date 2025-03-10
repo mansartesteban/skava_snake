@@ -79,7 +79,7 @@ class UIComponent extends Entity {
 
   setup() {
     this.setupDone = true;
-
+    this.setDefaultSlot(this);
     // while (this.pendingTree.length > 0) {
     //   this.addChild(this.pendingTree.shift());
     // }
@@ -116,17 +116,18 @@ class UIComponent extends Entity {
       .setDefaultStyle(this.getComponent(UIStyle));
   }
 
-  addChild(component) {
+  addChild(component, slotName = "default") {
     component.parent = this;
     component.uiManager = this.uiManager;
 
     component.getComponent(UIStyle).styleHandler.indexInParent =
       this.#tree.length;
 
+    let slot = this.slots.get(slotName) || this;
     if (this.setupDone) {
-      this.#tree.push(component);
+      slot.tree.push(component);
     } else {
-      this.#pendingTree.push(component);
+      slot.pendingTree.push({ slot: slotName, component });
     }
 
     return this;
