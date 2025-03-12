@@ -1,11 +1,9 @@
-import CardRenderer from "./CardRenderer";
 import UIComponent from "../../Core/UIComponent";
 import UIStyle from "../../Core/UIStyle";
 import Div from "../Div/Div";
 import RGB from "@/Engine/Lib/RGB";
+import DebugDivRenderer from "../DebugDiv/DebugDivRenderer";
 import DivRenderer from "../Div/DivRenderer";
-import Label from "../Label/Label";
-import Button from "../Button/Button";
 
 class Card extends UIComponent {
   setup() {
@@ -19,35 +17,32 @@ class Card extends UIComponent {
 
     uiStyle.setStyle(
       {
-        color: new RGB(0, 255, 255, 255),
-        width: "100%",
-        // height: 40,
-        margin: 20,
-        borderRadius: 24,
+        color: new RGB(255, 255, 255, 1),
+        borderRadius: 32,
       },
       true
     );
 
     let cardHeader = new Div(
       new UIStyle({
-        width: "100%",
         height: 64,
-        borderRadius: [24, 24, 0, 0],
-        color: RGB.Fuchsia,
+        borderRadius: [32, 32, 0, 0],
+        color: new RGB(220, 220, 220),
       })
     );
     let cardBody = new Div(
       new UIStyle({
-        color: RGB.Blue,
-        width: "100%",
         borderRadius: [8],
-        margin: [24],
+        margin: [32],
+        color: new RGB(255, 255, 255, 1),
+        align: "center",
       })
     );
 
     this.addChild(cardHeader);
     this.addChild(cardBody);
     this.setDefaultSlot(cardBody); // TODO
+    this.setSlot("header", cardHeader); // TODO
     this.addRenderer(new DivRenderer());
   }
 }

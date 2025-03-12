@@ -15,6 +15,17 @@ import Map from "./Map";
 import FoodFeeder from "./Foods/FoodFeeder";
 import EyeRender from "./Snake/EyeRender";
 import Stop from "./Commands/Stop";
+import MoveUpSwipe from "./Commands/MoveUpSwipe";
+import MoveLeftSwipe from "./Commands/ChangeDirection";
+import MoveDownSwipe from "./Commands/MoveDownSwipe";
+import MoveRightSwipe from "./Commands/MoveRightSwipe";
+import ChangeDirection from "./Commands/ChangeDirection";
+import Card from "@/Engine/UI/UIComponents/Card/Card";
+import UIManager from "@/Engine/UI/Core/UIManager";
+import Div from "@/Engine/UI/UIComponents/Div/Div";
+import UIStyle from "@/Engine/UI/Core/UIStyle";
+import Button from "@/Engine/UI/UIComponents/Button/Button";
+import Label from "@/Engine/UI/UIComponents/Label/Label";
 
 class SnakeScene extends Scene {
   snake;
@@ -22,15 +33,42 @@ class SnakeScene extends Scene {
 
   lastUpdate = 0;
 
+  commands = {};
+
   setup() {
     this.map = new Map({
-      size: 640,
+      size: Math.min(window.innerWidth / 1.1, 600),
       subdivisions: 12,
     });
     this.map.createTiles();
     this.worldManager = new WorldManager(this.map);
 
-    this.viewer.center()
+    this.viewer.center();
+    this.controls = new Controls();
+    this.start();
+
+    this.worldManager.add("food-handler", new FoodFeeder(this));
+  }
+
+  attachControls(entity) {
+    this.commands.moveup = this.controls.registerCommand(new MoveUp(entity));
+    this.commands.moveLeft = this.controls.registerCommand(
+      new MoveLeft(entity)
+    );
+    this.commands.moveDown = this.controls.registerCommand(
+      new MoveDown(entity)
+    );
+    this.commands.moveRight = this.controls.registerCommand(
+      new MoveRight(entity)
+    );
+    this.commands.changeDirection = this.controls.registerCommand(
+      new ChangeDirection(entity)
+    );
+    this.commands.eat = this.controls.registerCommand(new Eat(entity));
+    this.commands.stop = this.controls.registerCommand(new Stop(entity));
+  }
+
+  start() {
     this.snake = new Snake();
 
     this.snake.addComponent(
@@ -41,66 +79,85 @@ class SnakeScene extends Scene {
       })
     );
 
-    // this.snake2 = new Snake();
-    // this.snake2.addComponent(
-    //   new SnakeOptions({
-    //     color: new RGB(0xde, 0x7c, 0xf6),
-    //     size: this.map.tileSize * 0.75,
-    //     position: new Vector2(0, 1),
-    //   })
-    // );
-
-    // this.snake3 = new Snake();
-    // this.snake3.addComponent(
-    //   new SnakeOptions({
-    //     color: new RGB(0x5e, 0xec, 0xf6),
-    //     size: this.map.tileSize * 0.75,
-    //     position: new Vector2(0, -3),
-    //   })
-    // );
-
-    // this.snake4 = new Snake();
-    // this.snake4.addComponent(
-    //   new SnakeOptions({
-    //     color: new RGB(0xde, 0x2c, 0x56),
-    //     size: this.map.tileSize * 0.75,
-    //     position: new Vector2(0, 3),
-    //   })
-    // );
+    this.attachControls(this.snake);
 
     this.add(this.snake);
-    // this.add(this.snake2);
-    // this.add(this.snake3);
-    // this.add(this.snake4);
+  }
 
-    this.worldManager.add("food-handler", new FoodFeeder(this));
+  restart() {
+    Object.keys(this.commands).forEach((cmd) =>
+      this.controls.unregisterCommand(this.commands[cmd])
+    );
+    this.uiManager.clean();
+    this.remove(this.snake);
+    this.start();
+  }
 
-    this.controls = new Controls();
-    this.controls.registerCommand(new MoveUp(this.snake).trigger("KeyW"));
-    this.controls.registerCommand(new MoveLeft(this.snake).trigger("KeyA"));
-    this.controls.registerCommand(new MoveDown(this.snake).trigger("KeyS"));
-    this.controls.registerCommand(new MoveRight(this.snake).trigger("KeyD"));
+  gameOver() {
+    this.uiManager = new UIManager(this);
+    this.uiManager.mainLayout.setStyle({
+      align: "center",
+    });
+    let gameOverScreen = new Card(
+      new UIStyle({
+        margin: [150, 0, 0, 0],
+        height: "40%",
+        width: "80%",
+        color: new RGB(255, 255, 255, 1),
+        shadowColor: new RGB(0, 0, 0, 0.5),
+        shadowBlur: "32",
+      })
+    );
 
-    // this.controls.registerCommand("KeyT", new MoveUp(this.snake3));
-    // this.controls.registerCommand("KeyF", new MoveLeft(this.snake3));
-    // this.controls.registerCommand("KeyG", new MoveDown(this.snake3));
-    // this.controls.registerCommand("KeyH", new MoveRight(this.snake3));
+    // #shadowColor;
+    // #shadowBlur;
+    // #shadowPosition;
+    // #shadowSize;
+    let gameOverTitleContainer = new Div(
+      new UIStyle({
+        height: 20,
+      })
+    );
+    let gameOverTitle = new Label(
+      new UIStyle({
+        color: RGB.Black,
+      })
+    );
+    let gameOverScore = new Label(
+      new UIStyle({
+        margin: [20, 0],
+        color: RGB.Black,
+      })
+    );
+    gameOverTitle.setText("Game Over !");
+    gameOverScore.setText("Score : " + this.snake.food);
 
-    // this.controls.registerCommand("KeyI", new MoveUp(this.snake2));
-    // this.controls.registerCommand("KeyJ", new MoveLeft(this.snake2));
-    // this.controls.registerCommand("KeyK", new MoveDown(this.snake2));
-    // this.controls.registerCommand("KeyL", new MoveRight(this.snake2));
+    Object.keys(this.commands).forEach((command) =>
+      this.controls.unregisterCommand(this.commands[command])
+    );
 
-    // this.controls.registerCommand("ArrowUp", new MoveUp(this.snake4));
-    // this.controls.registerCommand("ArrowLeft", new MoveLeft(this.snake4));
-    // this.controls.registerCommand("ArrowDown", new MoveDown(this.snake4));
-    // this.controls.registerCommand("ArrowRight", new MoveRight(this.snake4));
+    let retryLabel = new Label(new UIStyle({}));
+    retryLabel.setText("Rejouer");
+    let retryButton = new Button(
+      new UIStyle({
+        borderRadius: 999,
+        height: 48,
+        width: 240,
+        margin: [64, 0, 0, 0],
+        color: RGB.Red,
+      })
+    );
+    gameOverTitleContainer.addChild(gameOverTitle);
+    gameOverTitleContainer.addChild(gameOverScore);
+    gameOverScreen.addChild(gameOverTitleContainer);
+    gameOverScreen.addChild(retryButton);
+    retryButton.addChild(retryLabel);
 
-    this.controls.registerCommand("Space", new Eat(this.snake));
-    // this.controls.registerCommand("Space", new Eat(this.snake2));
+    retryButton.addEventListener("click", (e) => {
+      this.restart();
+    });
 
-    this.controls.registerCommand("KeyE", new Stop(this.snake));
-    // this.controls.registerCommand("KeyE", new Stop(this.snake2));
+    this.uiManager.mainLayout.addChild(gameOverScreen);
   }
 
   loop(deltaTime, currentTime) {

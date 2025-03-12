@@ -9,6 +9,10 @@ class RoundSquare {
   #radius;
   #rotation;
   #color;
+  #shadowBlur;
+  #shadowColor;
+  #shadowSize;
+  #shadowPosition;
 
   constructor(
     position = new Vector2(),
@@ -44,6 +48,19 @@ class RoundSquare {
     return this.#rotation;
   }
 
+  get shadowBlur() {
+    return this.#shadowBlur;
+  }
+  get shadowColor() {
+    return this.#shadowColor;
+  }
+  get shadowSize() {
+    return this.#shadowSize;
+  }
+  get shadowPosition() {
+    return this.#shadowPosition;
+  }
+
   set position(position) {
     this.#position = position;
   }
@@ -59,6 +76,18 @@ class RoundSquare {
   set rotation(rotation) {
     this.#rotation = rotation;
   }
+  set shadowBlur(shadowBlur) {
+    this.#shadowBlur = shadowBlur;
+  }
+  set shadowColor(shadowColor) {
+    this.#shadowColor = shadowColor;
+  }
+  set shadowSize(shadowSize) {
+    this.#shadowSize = shadowSize;
+  }
+  set shadowPosition(shadowPosition) {
+    this.#shadowPosition = shadowPosition;
+  }
 
   draw(viewer) {
     let ctx = viewer.ctx;
@@ -66,10 +95,22 @@ class RoundSquare {
       ctx.fillStyle = this.#color._toString;
 
       ctx.save();
-      ctx.translate(this.position.x + this.size.x / 2, this.position.y + this.size.y /2);
+      ctx.translate(
+        this.position.x + this.size.x / 2,
+        this.position.y + this.size.y / 2
+      );
       ctx.rotate(-this.rotation.angle);
-      ctx.translate(-this.position.x - this.size.x / 2, -this.position.y - this.size.y/2);
+      ctx.translate(
+        -this.position.x - this.size.x / 2,
+        -this.position.y - this.size.y / 2
+      );
       ctx.imageSmoothingEnabled = false;
+      if (this.shadowBlur) {
+        ctx.shadowBlur = this.shadowBlur;
+      }
+      if (this.shadowColor) {
+        ctx.shadowColor = this.shadowColor._toString;
+      }
       ctx.roundRect(
         this.position.x,
         this.position.y,
@@ -79,6 +120,12 @@ class RoundSquare {
       );
       ctx.fill();
       ctx.restore();
+      if (this.shadowBlur) {
+        ctx.shadowBlur = 0;
+      }
+      if (this.shadowColor) {
+        ctx.shadowColor = "";
+      }
 
       return ["fillStyle"];
     });

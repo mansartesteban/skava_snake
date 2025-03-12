@@ -1,8 +1,8 @@
 import Vector2 from "@/Engine/Lib/Vector2";
 import SnakePhysics from "../Snake/SnakePhysics";
-import CommandOnce from "@/Engine/Commands/CommandOnce";
+import CommandSwipe from "@/Engine/Commands/CommandSwipe";
 
-class MoveUp extends CommandOnce {
+class MoveUpSwipe extends CommandSwipe {
   key = "KeyW";
   constructor(entity) {
     super();
@@ -14,4 +14,4 @@ class MoveUp extends CommandOnce {
   }
 }
 
-export default MoveUp;
+export default MoveUpSwipe;

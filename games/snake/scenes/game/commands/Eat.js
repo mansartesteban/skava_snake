@@ -1,6 +1,8 @@
 import CommandOnce from "@/Engine/Commands/CommandOnce";
 
 class Eat extends CommandOnce {
+  key = "Space";
+
   constructor(entity) {
     super();
     this.entity = entity;

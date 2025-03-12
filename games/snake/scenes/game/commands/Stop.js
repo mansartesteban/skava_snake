@@ -3,6 +3,8 @@ import SnakePhysics from "../Snake/SnakePhysics";
 import CommandOnce from "@/Engine/Commands/CommandOnce";
 
 class Stop extends CommandOnce {
+  key = "KeyE";
+
   constructor(entity) {
     super();
     this.entity = entity;
@@ -11,6 +13,7 @@ class Stop extends CommandOnce {
   execute(deltaTime) {
     // this.entity.getComponent(SnakePhysics).setNextPosition(new Vector2(0, 0));
     this.entity.speed = this.entity.speed === 0 ? 1 : 0;
+    this.entity.scene.gameOver();
   }
 }
 

@@ -3,6 +3,7 @@ import SnakePhysics from "../Snake/SnakePhysics";
 import CommandOnce from "@/Engine/Commands/CommandOnce";
 
 class MoveLeft extends CommandOnce {
+  key = "KeyA";
   constructor(entity) {
     super();
     this.entity = entity;

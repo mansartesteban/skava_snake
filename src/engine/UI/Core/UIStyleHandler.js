@@ -7,15 +7,11 @@ class UIStyleHandler {
 
   #style;
   indexInParent = 0;
-  nextPosition = new Vector2();
 
   datas = {
     size: new Vector2(),
     margin: [0, 0, 0, 0],
   };
-
-  lastSize = new Vector2();
-  currentSize = new Vector2();
 
   constructor(uiStyle) {
     if (!(uiStyle instanceof UIStyle)) {
@@ -44,13 +40,6 @@ class UIStyleHandler {
 
   get lastSiblingStyleHandler() {
     return this.lastSibling?.getComponent(UIStyle)?.styleHandler;
-  }
-
-  get hasSizeChanged() {
-    return (
-      this.lastSize.x !== this.currentSize.x ||
-      this.lastSize.y !== this.currentSize.y
-    );
   }
 
   set style(style) {
@@ -121,8 +110,8 @@ class UIStyleHandler {
       }
     }
 
-    this.datas.size.x = x === "auto" ? 0 : x;
-    this.datas.size.y = y === "auto" ? 0 : y;
+    this.datas.size.x = x;
+    this.datas.size.y = y;
 
     if (this.style.margin) {
       let value = this.style.margin;
@@ -140,7 +129,9 @@ class UIStyleHandler {
           return val;
         } else if (val.endsWith("%")) {
           let v = parseFloat(val.replace("%", ""));
-          let axe = [0, 2].includes(index) ? y : x;
+          let axe = [0, 2].includes(index)
+            ? parentTransform.size.y
+            : parentTransform.size.x;
           return axe * (v / 100);
         } else if (val.endsWith("px")) {
           let v = parseFloat(val.replace("px", ""));
@@ -150,7 +141,10 @@ class UIStyleHandler {
         }
       });
       if (this.style.direction === "vertical") {
+        // if (x + value[1] + value[3] > parentTransform.size.x) {
         x -= value[1] + value[3];
+        // } else {
+        // }
       } else if (this.style.direction === "horizontal") {
         y -= value[0] + value[2];
       }
@@ -212,7 +206,9 @@ class UIStyleHandler {
           return val;
         } else if (val.endsWith("%")) {
           let v = parseFloat(val.replace("%", ""));
-          let axe = [0, 2].includes(index) ? y : x;
+          let axe = [0, 2].includes(index)
+            ? parentTransform.size.y
+            : parentTransform.size.x;
           return axe * (v / 100);
         } else if (val.endsWith("px")) {
           let v = parseFloat(val.replace("px", ""));
@@ -223,6 +219,23 @@ class UIStyleHandler {
       });
       x += value[3];
       y += value[0];
+    }
+
+    let parentStyle = this.parent.getComponent(UIStyle);
+    if (parentStyle.align && parentStyle.align === "center") {
+      if (parentStyle.direction === "horizontal") {
+        y +=
+          parentTransform.size.y / 2 -
+          this.component.transform.size.y / 2 -
+          this.datas.margin[0] / 2 -
+          this.datas.margin[2] / 2;
+      } else {
+        x +=
+          parentTransform.size.x / 2 -
+          this.component.transform.size.x / 2 -
+          this.datas.margin[1] / 2 -
+          this.datas.margin[3] / 2;
+      }
     }
     return new Vector2(x, y);
   }

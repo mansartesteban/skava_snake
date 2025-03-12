@@ -1,6 +1,6 @@
-import Vector2 from "../Lib/Vector2"
-import CanvasRenderer from "../Renderers/CanvasRenderer"
- 
+import Vector2 from "../Lib/Vector2";
+import CanvasRenderer from "../Renderers/CanvasRenderer";
+
 class Viewer2d {
   options;
   node;
@@ -12,31 +12,30 @@ class Viewer2d {
     this.node = node;
     this.options = { ...this.options, ...options };
 
-    this.renderer = new CanvasRenderer(this.options)
-    this.size = this.options.size
+    this.renderer = new CanvasRenderer(this.options);
+    this.size = this.options.size;
     this.render();
   }
 
   get ctx() {
-    return this.renderer.ctx
+    return this.renderer.ctx;
   }
 
   center() {
-    this.origin = this.size.clone().divide(2)
+    this.origin = this.size.clone().divide(2);
     this.ctx.translate(this.origin.x, this.origin.y);
   }
 
   render() {
     this.ctx.clearRect(0, 0, this.size.x, this.size.y);
-    this.node.appendChild(this.renderer.domElement)
+    this.node.appendChild(this.renderer.domElement);
   }
 
   refresh() {
-    this.size.x = window.innerWidth
-    this.size.y = window.innerHeight
-    this.renderer.domElement.width = this.size.x
-    this.renderer.domElement.height = this.size.y
-
+    // this.size.x = window.innerWidth;
+    // this.size.y = window.innerHeight;
+    // this.renderer.domElement.width = this.size.x;
+    // this.renderer.domElement.height = this.size.y;
     this.ctx.clearRect(
       -this.size.x / 2,
       -this.size.y / 2,

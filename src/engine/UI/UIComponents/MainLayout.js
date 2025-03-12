@@ -15,6 +15,7 @@ class MainLayout extends UIComponent {
 
     component.getComponent(UIStyle).setDefaultStyle(this.getComponent(UIStyle));
     this.scene.add(component);
+    this.uiManager.add(component);
     while (component.pendingTree.length > 0) {
       let toHandle = component.pendingTree.shift();
       let slot = component.slots.get(toHandle.slot) || component;
@@ -29,8 +30,9 @@ class MainLayout extends UIComponent {
   }
 
   copyViewerTransform() {
-    this.transform.position.x = this.scene.viewer.origin.x;
-    this.transform.position.y = this.scene.viewer.origin.y;
+    // .sub(this.component.scene.viewer.origin.clone().multiply(1))
+    this.transform.position.x = -this.scene.viewer.origin.x;
+    this.transform.position.y = -this.scene.viewer.origin.y;
     this.transform.size.x = this.scene.viewer.size.x;
     this.transform.size.y = this.scene.viewer.size.y;
   }

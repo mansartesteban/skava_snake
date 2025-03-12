@@ -49,7 +49,7 @@ class Text {
   draw(viewer) {
     let ctx = viewer.ctx;
     Draw.draw(viewer, () => {
-      ctx.font = `${this.fontSize}pt sans-serif`;
+      ctx.font = `${this.fontSize}pt BraahOne`;
       ctx.textAlign = "center";
       ctx.textBaseline = "center";
 
@@ -57,7 +57,7 @@ class Text {
       ctx.fillText(
         this.text.toString(),
         this.position.x,
-        this.position.y + this.fontSize / 2.15
+        this.position.y + this.fontSize / 3
       );
 
       return ["fillStyle"];

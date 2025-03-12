@@ -34,9 +34,6 @@ class EntityManager {
       let entityFound = this.entities[foundIndex];
 
       this.observer.$emit(EntityManager.EVENTS.ENTITY_DELETED, entityFound);
-      this.scene.threeScene.remove(entityFound.object);
-      entityFound.object.remove();
-      entityFound.object.clear();
 
       for (let i = entityFound.components.length - 1; i >= 0; i--) {
         entityFound.components.splice(i, 1);

@@ -22,7 +22,7 @@ class SnakePhysics extends Component {
     if (this.entity.speed === 0) {
       this.setNextPosition(direction);
     } else {
-      let nextDirection = this.directionStack[0] || this.nextDirection
+      let nextDirection = this.directionStack[0] || this.nextDirection;
       if (
         !(
           (direction.x === 0 && nextDirection.x === 0) ||
@@ -161,7 +161,7 @@ class SnakePhysics extends Component {
 
   isTouching() {
     return this.entity.positions.slice(1).some(({ position }) => {
-      let head = this.entity.positions[0].position;
+      let head = this.entity.positions[0].nextPosition;
       return head.x === position.x && head.y === position.y;
     });
   }
@@ -178,8 +178,10 @@ class SnakePhysics extends Component {
 
   loop(deltaTime, currentTime) {
     if (currentTime - this.lastUpdate > 1000 / this.entity.speed) {
-      if (this.isTouching()) { 
-        console.info("Game over");
+      if (this.isTouching()) {
+        this.entity.speed = 0;
+        this.entity.scene.gameOver();
+        return;
       }
 
       if (

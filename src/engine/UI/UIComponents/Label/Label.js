@@ -1,19 +1,35 @@
-import UIComponent from "../../Core/UIComponent"
-import LabelRenderer from "./LabelRenderer"
+import RGB from "@/Engine/Lib/RGB";
+import UIComponent from "../../Core/UIComponent";
+import UIStyle from "../../Core/UIStyle";
+import LabelRenderer from "./LabelRenderer";
 
 class Label extends UIComponent {
+  text;
 
-    text;
+  setup() {
+    super.setup();
 
-    
-    setup() {
-        super.setup()
-        this.addRenderer(new LabelRenderer())
+    this.reactToEvents = false;
+
+    let uiStyle = this.getComponent(UIStyle);
+    if (!uiStyle) {
+      uiStyle = new UIStyle();
+      this.addComponent(uiStyle);
     }
-    
-    setText(text) {
-        this.text = text;
-    }
+
+    uiStyle.setStyle(
+      {
+        height: "100%",
+      },
+      true
+    );
+
+    this.addRenderer(new LabelRenderer());
+  }
+
+  setText(text) {
+    this.text = text;
+  }
 }
 
 export default Label;

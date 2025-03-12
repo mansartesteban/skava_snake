@@ -3,11 +3,8 @@ import UIRenderer from "./UIRenderer";
 import Entity from "@/Engine/Entity";
 import TransformComponent from "@/Engine/Components/TransformComponent";
 import UIStyle from "./UIStyle";
-import UIManager from "./UIManager";
 import Observer from "@/Engine/Observer";
 import Vector2 from "@/Engine/Lib/Vector2";
-import UIStyleHandler from "./UIStyleHandler";
-import { getProperties } from "@/Engine/Lib/Objet";
 
 class UIComponent extends Entity {
   #renderer;
@@ -17,12 +14,12 @@ class UIComponent extends Entity {
   #tree = [];
   #pendingTree = [];
   setupDone = false;
+  reactToEvents = true;
 
   uiManager;
 
   datas = {
     origin: new Vector2(),
-    nextPosition: new Vector2(),
     defaultSlot: null,
   };
   slots = new Map();
@@ -80,15 +77,6 @@ class UIComponent extends Entity {
   setup() {
     this.setupDone = true;
     this.setDefaultSlot(this);
-    // while (this.pendingTree.length > 0) {
-    //   this.addChild(this.pendingTree.shift());
-    // }
-    // this.#tmpTree = this.#tree;
-    // this.#tree = [];
-    // this.root =
-    // if (this.root !== this) {
-    // this.getComponent(UIStyle).styleHandler.handleStyle();
-    // }
   }
 
   addRenderer(renderer) {
@@ -102,18 +90,16 @@ class UIComponent extends Entity {
     return this;
   }
 
+  setStyle(style) {
+    this.getComponent(UIStyle).setStyle(style);
+  }
+
   setSlot(name, component) {
     this.slots.set(name, component);
   }
 
   setDefaultSlot(child) {
     this.setSlot("default", child);
-  }
-
-  setDefaultStyle(uiComponent) {
-    uiComponent
-      .getComponent(UIStyle)
-      .setDefaultStyle(this.getComponent(UIStyle));
   }
 
   addChild(component, slotName = "default") {

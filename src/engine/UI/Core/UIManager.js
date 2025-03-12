@@ -27,6 +27,7 @@ class UIManager {
           fontSize: 24,
           width: "100%",
           height: "auto",
+          align: "left",
           layout: "relative",
           color: RGB.White,
           textColor: RGB.Black,
@@ -52,15 +53,18 @@ class UIManager {
     return this.#uiComponents;
   }
 
+  clean() {
+    this.uiComponents.forEach((child) => {
+      console.log("clean", this.scene);
+      this.scene.remove(child);
+    });
+  }
+
   add(uiComponent) {
     if (uiComponent instanceof UIComponent) {
       uiComponent.uiManager = this;
 
       this.#uiComponents.unshift(uiComponent);
-      this.scene.add(uiComponent);
-      if (uiComponent.children.length > 0) {
-        uiComponent.children.forEach((child) => this.add(child));
-      }
     }
   }
 }

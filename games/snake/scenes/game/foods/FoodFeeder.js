@@ -29,15 +29,10 @@ class FoodFeeder {
     let yMin = this.scene.map.yMin / this.scene.map.tileSize;
     let yMax = this.scene.map.yMax / this.scene.map.tileSize;
 
+    console.log(xMin, xMax, yMin, yMax);
     this.activeFood.position = new Vector2(
-      random(
-        xMin,
-        xMax - 1
-      ),
-      random(
-        yMin,
-        yMax - 1
-      )
+      random(xMin, xMax - 1),
+      random(yMin, yMax - 1)
     );
   }
 

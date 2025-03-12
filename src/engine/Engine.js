@@ -45,10 +45,7 @@ class Engine {
     }
     // await new Promise((r) => setTimeout(r, 1000));
     this.lastUpdate = currentTime;
-    // this.i++;
-    // if (this.i < 4) {
     window.requestAnimationFrame(this.loop.bind(this));
-    // }
   }
 }
 

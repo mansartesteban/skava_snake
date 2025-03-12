@@ -2,7 +2,7 @@ import RoundSquare from "@/Engine/Shapes/RoundSquare";
 import UIRenderer from "../../Core/UIRenderer";
 import UIStyle from "../../Core/UIStyle";
 
-class DivRenderer extends UIRenderer {
+class DebugDivRenderer extends UIRenderer {
   shape;
   style;
 
@@ -24,8 +24,10 @@ class DivRenderer extends UIRenderer {
     this.shape.shadowBlur = this.style.shadowBlur;
     this.shape.shadowColor = this.style.shadowColor;
 
+    console.log("render", this.style);
+
     this.shape.draw(viewer);
   }
 }
 
-export default DivRenderer;
+export default DebugDivRenderer;

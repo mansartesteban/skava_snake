@@ -20,7 +20,7 @@ class RGB {
   #g = 0;
   #b = 0;
 
-  #opacity = 255;
+  #opacity = 1;
 
   /**
    * @param r The red value of this color from 0 to 255
@@ -36,7 +36,7 @@ class RGB {
       this.#r = (hex >> 16) & 0xff;
       this.#g = (hex >> 8) & 0xff;
       this.#b = hex & 0xff;
-      this.#opacity = 255;
+      this.#opacity = 1;
     } else {
       // Cas normal avec r, g, b séparés
       this.#r = r ?? this.#r;
@@ -118,7 +118,9 @@ class RGB {
       parseInt(this.r.toFixed(0)).toString(16).padStart(2, "0") +
       parseInt(this.g.toFixed(0)).toString(16).padStart(2, "0") +
       parseInt(this.b.toFixed(0)).toString(16).padStart(2, "0") +
-      parseInt(this.opacity.toFixed(0)).toString(16).padStart(2, "0")
+      parseInt(Math.floor(this.opacity * 255).toFixed(0))
+        .toString(16)
+        .padStart(2, "0")
     );
   }
 
@@ -133,14 +135,14 @@ class RGB {
         this.r + color.r,
         this.g + color.g,
         this.b + color.b,
-        this.opacity / 0xff + color.opacity / 0xff
+        this.opacity + color.opacity
       );
     } else if (typeof color === "number") {
       return new RGB(
         this.r + color,
         this.g + color,
         this.b + color,
-        this.opacity / 0xff + color / 0xff
+        this.opacity + color
       );
     } else {
       throw (
@@ -162,7 +164,7 @@ class RGB {
         Math.floor((this.r * color.r) / 0xff),
         Math.floor((this.g * color.g) / 0xff),
         Math.floor((this.b * color.b) / 0xff),
-        Math.floor((this.opacity / 0xff) * (color.opacity / 0xff))
+        Math.floor(this.opacity * color.opacity)
       );
     } else if (typeof color === "number") {
       return new RGB(
@@ -194,8 +196,7 @@ class RGB {
     this.g = (1 - weight) * this.g + weight * color.g;
     this.b = (1 - weight) * this.b + weight * color.b;
     if (withOpacity) {
-      this.opacity =
-        (1 - weight) * (this.opacity / 0xff) + weight * (color.opacity / 0xff);
+      this.opacity = (1 - weight) * this.opacity + weight * color.opacity;
     }
     return this;
   }

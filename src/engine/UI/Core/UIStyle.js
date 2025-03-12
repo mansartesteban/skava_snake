@@ -24,6 +24,7 @@ class UIStyle extends Component {
   #width;
   #height;
   #direction;
+  #align;
 
   constructor(style, inherit = false) {
     super();
@@ -47,6 +48,7 @@ class UIStyle extends Component {
       this.width = style.width || this.#width;
       this.height = style.height || this.#height;
       this.direction = style.direction || this.#direction;
+      this.align = style.align || this.#align;
     }
 
     this.#inherit = inherit;
@@ -105,6 +107,9 @@ class UIStyle extends Component {
   }
   get direction() {
     return this.#direction;
+  }
+  get align() {
+    return this.#align;
   }
   get needsUpdate() {
     return this.#needsUpdate;
@@ -187,6 +192,9 @@ class UIStyle extends Component {
   }
   set needsUpdate(needsUpdate) {
     this.#needsUpdate = needsUpdate;
+  }
+  set align(align) {
+    this.#align = align;
   }
 
   setup() {
