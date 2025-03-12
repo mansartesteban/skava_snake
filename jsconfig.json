@@ -4,7 +4,7 @@
     "target": "ESNext",
     "baseUrl": "./",
     "paths": {
-      "@errors/*": ["src/Application/errors/*"],
+      "@errors/*": ["src/Application/Errors/*"],
       "@/*": ["src/*"],
       "@snake/*": ["Games/Snake/*"]
       // "@games/*": ["games/*"],
