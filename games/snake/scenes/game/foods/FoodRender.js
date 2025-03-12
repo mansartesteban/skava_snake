@@ -18,7 +18,7 @@ class FoodRender extends Render2DComponent {
     // this.width = 100
     // this.height = 100
 
-    this.draw = new Img("/Games/Snake/Assets/fruit-basic.png");
+    this.draw = new Img("/fruit-basic.png");
   }
 
   setup() {}

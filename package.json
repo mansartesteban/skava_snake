@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm i && vite .",
-    "build": "pnpm i && pnpm build",
+    "build": "pnpm i && vite build",
+    "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

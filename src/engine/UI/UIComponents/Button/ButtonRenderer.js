@@ -18,7 +18,7 @@ class ButtonRenderer extends UIRenderer {
       this.style.color
     );
 
-    this.shape = new Img("/Games/Snake/Assets/button.png");
+    this.shape = new Img("/button.png");
   }
 
   render(viewer) {

@@ -16,10 +16,7 @@ class LabelRenderer extends UIRenderer {
       this.style.color,
       this.style.fontSize
     );
-    let f = new FontFace(
-      "BraahOne",
-      "url(/Games/Snake/Assets/BraahOne-Regular.ttf)"
-    );
+    let f = new FontFace("BraahOne", "url(/BraahOne-Regular.ttf)");
 
     f.load().then((font) => {
       document.fonts.add(font);
