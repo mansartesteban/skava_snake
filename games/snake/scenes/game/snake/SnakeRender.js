@@ -1,10 +1,8 @@
 import Render2DComponent from "@/Engine/Components/Render2dComponent";
 import Line from "@/Engine/Shapes/Line";
 import RGB from "@/Engine/Lib/RGB";
-import MultiLine from "@/Engine/Shapes/MultiLine";
 import DebugVector from "@/Engine/Shapes/DebugVector";
-import Vector2 from "@/Engine/Lib/Vector2";
-import EyeRender from "./EyeRender";
+import EyeRender from "@snake/Scenes/Game/Snake/EyeRender";
 import { lerp } from "@/Engine/Lib/Numeric";
 
 class SnakeRender extends Render2DComponent {
@@ -55,7 +53,7 @@ class SnakeRender extends Render2DComponent {
     }
 
     for (let j = 0; j < this.bodies.length; j++) {
-      let i =this.bodies.length - 1 - j
+      let i = this.bodies.length - 1 - j;
       let body = this.bodies[i];
 
       body.thickness = lerp(

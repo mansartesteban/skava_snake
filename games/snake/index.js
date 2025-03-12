@@ -1,6 +1,5 @@
 import Project from "@/Engine/Project";
-import SnakeScene from "./Scenes/Game/SnakeScene";
-import MainMenu from "./Scenes/MainMenu/MainMenu";
+import SnakeScene from "@snake/Scenes/Game/SnakeScene";
 
 class Snake extends Project {
   constructor() {

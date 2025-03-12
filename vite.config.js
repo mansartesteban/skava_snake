@@ -6,6 +6,7 @@ const root = path.resolve(__dirname);
 export default defineConfig({
   resolve: {
     alias: {
+      "@snake": path.resolve(__dirname, "./Games/Snake"),
       "@projects": path.resolve(__dirname, "./projects"),
       "@app": path.resolve(__dirname, "./src/Application"),
       "@assets": path.resolve(__dirname, "./src/Engine/Assets"),
