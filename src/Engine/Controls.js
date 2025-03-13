@@ -4,6 +4,7 @@ import CommandMouseMove from "./Commands/CommandMouseMove";
 import CommandOnce from "./Commands/CommandOnce";
 import CommandSwipe from "./Commands/CommandSwipe";
 import CommandToggle from "./Commands/CommandToggle";
+import CommandTouchMaintain from "./Commands/CommandTouchMaintain";
 import Vector2 from "./Lib/Vector2";
 
 class Controls {
@@ -14,6 +15,7 @@ class Controls {
   pointerLock = null;
 
   mouse = new Vector2();
+  touchStart = new Vector2();
   touch = new Vector2();
 
   constructor(pointerLock = false) {
@@ -22,6 +24,7 @@ class Controls {
     window.addEventListener("mousemove", this.#onMouseMove.bind(this));
     window.addEventListener("click", this.#onClick.bind(this));
     window.addEventListener("touchstart", this.#onTouchStart.bind(this));
+    window.addEventListener("touchmove", this.#onTouchMove.bind(this));
     window.addEventListener("touchend", this.#onTouchEnd.bind(this));
 
     if (pointerLock) {
@@ -63,6 +66,18 @@ class Controls {
         command.execute(e);
       });
     }
+  }
+
+  #onTouchMove(e) {
+    this.touch.x = e.changedTouches[0].screenX;
+    this.touch.y = e.changedTouches[0].screenY;
+
+    let touchMaintainCommands = this.commands.filter(
+      (command) => command instanceof CommandTouchMaintain
+    );
+    touchMaintainCommands.forEach((command) =>
+      command.execute({ touchStart: this.touchStart, touch: this.touch })
+    );
   }
 
   #onKeyUp(e) {
@@ -124,37 +139,38 @@ class Controls {
   }
 
   #onTouchStart(e) {
-    this.touch.x = e.changedTouches[0].screenX;
-    this.touch.y = e.changedTouches[0].screenY;
+    this.touchStart.x = e.changedTouches[0].screenX;
+    this.touchStart.y = e.changedTouches[0].screenY;
+
+    let touchMaintainCommands = this.commands.filter(
+      (command) => command instanceof CommandTouchMaintain
+    );
+    touchMaintainCommands.forEach((command) => (command.started = true));
   }
 
   #onTouchEnd(e) {
-    if (
-      this.touch.x !== e.changedTouches[0].screenX &&
-      this.touch.y !== e.changedTouches[0].screenY
-    ) {
-      let angle = new Vector2(
-        e.changedTouches[0].screenX,
-        e.changedTouches[0].screenY
-      ).sub(this.touch).rotation.angle;
+    let touchMaintainCommands = this.commands.filter(
+      (command) => command instanceof CommandTouchMaintain
+    );
+    touchMaintainCommands.forEach((command) => {
+      command.release();
+      command.started = false;
+    });
 
-      if (angle >= -Math.PI / 4 && angle <= Math.PI / 4)
-        this.#onSwipe(new Vector2(1, 0));
-      else if (angle > Math.PI / 4 && angle < (3 * Math.PI) / 4)
-        this.#onSwipe(new Vector2(0, 1));
-      else if (angle >= (3 * Math.PI) / 4 || angle <= (-3 * Math.PI) / 4)
-        this.#onSwipe(new Vector2(-1, 0));
-      else this.#onSwipe(new Vector2(0, -1));
+    if (
+      this.touchStart.x !== e.changedTouches[0].screenX &&
+      this.touchStart.y !== e.changedTouches[0].screenY
+    ) {
+      this.#onSwipe();
     }
   }
 
-  #onSwipe(direction) {
+  #onSwipe() {
     let swipeCommands = this.commands.filter(
       (command) => command instanceof CommandSwipe
     );
-    swipeCommands;
     swipeCommands.forEach((swipeCommand) => {
-      swipeCommand.execute(direction);
+      swipeCommand.execute({ touch: this.touch, touchStart: this.touchStart });
     });
   }
 

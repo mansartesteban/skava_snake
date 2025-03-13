@@ -20,6 +20,12 @@ import Div from "@/Engine/UI/UIComponents/Div/Div";
 import UIStyle from "@/Engine/UI/Core/UIStyle";
 import Button from "@/Engine/UI/UIComponents/Button/Button";
 import Label from "@/Engine/UI/UIComponents/Label/Label";
+import Circle from "@/Engine/Shapes/Circle";
+import Render2DComponent from "@/Engine/Components/Render2dComponent";
+import Entity from "@/Engine/Entity";
+import Joystick from "./Joystick/Joystick";
+import JoystickCommand from "./Joystick/JoystickCommand";
+import SnakePhysics from "./Snake/SnakePhysics";
 
 class SnakeScene extends Scene {
   snake;
@@ -28,6 +34,7 @@ class SnakeScene extends Scene {
   lastUpdate = 0;
 
   commands = {};
+  gameStarted = false;
 
   setup() {
     this.map = new Map({
@@ -39,9 +46,16 @@ class SnakeScene extends Scene {
 
     this.viewer.center();
     this.controls = new Controls();
-    this.start();
 
     this.worldManager.add("food-handler", new FoodFeeder(this));
+    this.createJoystick();
+
+    this.start();
+  }
+
+  createJoystick() {
+    this.joystick = new Joystick();
+    this.add(this.joystick);
   }
 
   attachControls(entity) {
@@ -55,11 +69,11 @@ class SnakeScene extends Scene {
     this.commands.moveRight = this.controls.registerCommand(
       new MoveRight(entity)
     );
-    this.commands.changeDirection = this.controls.registerCommand(
-      new ChangeDirection(entity)
-    );
     this.commands.eat = this.controls.registerCommand(new Eat(entity));
     this.commands.stop = this.controls.registerCommand(new Stop(entity));
+    this.commands.joystick = this.controls.registerCommand(
+      new JoystickCommand(this.joystick)
+    );
   }
 
   start() {
@@ -76,6 +90,7 @@ class SnakeScene extends Scene {
     this.attachControls(this.snake);
 
     this.add(this.snake);
+    this.gameStarted = true;
   }
 
   restart() {
@@ -88,6 +103,7 @@ class SnakeScene extends Scene {
   }
 
   gameOver() {
+    this.gameStarted = false;
     this.uiManager = new UIManager(this);
     this.uiManager.mainLayout.setStyle({
       align: "center",
@@ -158,6 +174,14 @@ class SnakeScene extends Scene {
     this.map.draw(this.viewer);
     let now = performance.now();
     this.controls.update(deltaTime);
+
+    if (this.gameStarted) {
+      if (this.joystick.isUsed) {
+        this.snake
+          .getComponent(SnakePhysics)
+          .changeDirection(this.joystick.getOrientation());
+      }
+    }
   }
 }
 

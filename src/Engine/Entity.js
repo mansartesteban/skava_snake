@@ -32,13 +32,13 @@ class Entity {
   }
 
   update(deltaTime, currentTime) {
-    this.loop();
+    this.loop(deltaTime, currentTime);
     this.components.forEach((component) => {
       component.updateComponent(deltaTime, currentTime);
     });
   }
 
-  loop() {}
+  loop(deltaTime, currentTime) {}
 }
 
 export default Entity;
