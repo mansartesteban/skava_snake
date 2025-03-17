@@ -1,8 +1,8 @@
 {
-  "name": "default-project-vite-no-vue",
+  "name": "skava-snake",
   "version": "1.0.0",
-  "description": "Default project vite no vue",
-  "main": "main.js",
+  "description": "The famous snake game reworked by Skava Labs",
+  "main": "src/main.js",
   "type": "module",
   "scripts": {
     "dev": "pnpm i && vite .",
@@ -14,10 +14,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^5.4.9"
+    "vite": "^5.4.14"
   },
   "dependencies": {
-    "sass": "^1.80.3",
-    "uuid": "^11.1.0"
+    "sass": "^1.85.1",
+    "skava-engine": "^1.0.15"
   }
 }

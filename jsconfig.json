@@ -4,16 +4,15 @@
     "target": "ESNext",
     "baseUrl": "./",
     "paths": {
-      "@errors/*": ["src/Application/Errors/*"],
-      "@/*": ["src/*"],
-      "@snake/*": ["Games/Snake/*"]
+      "@/*": ["src/*"]
       // "@games/*": ["games/*"],
       // "@error/*": ["src/Application/Errors/*"],
       // "@core/*": ["src/Engine/Core/*"],
       // "@lib/*": ["src/Engine/Lib/*"]
     },
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "moduleResolution": "bundler"
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*.js", "Games/**/*.js"]
+  "include": ["src/**/*.js"]
 }

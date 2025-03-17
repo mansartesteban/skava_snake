@@ -1,8 +1,7 @@
-import "@/application/assets/styles/reset.css";
-import "@/application/assets/styles/engine.css";
-import "@/application/assets/styles/main.css";
+// Engine imports
+import { Application } from "skava-engine/Core";
 
-import Application from "@/Application/Application";
-import Snake from "@/../Games/Snake/index";
+// Project imports
+import Snake from "./index";
 
 Application.start().then(() => Application.loadProject(Snake));
