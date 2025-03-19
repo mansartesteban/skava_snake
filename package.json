@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "sass": "^1.85.1",
-    "skava-engine": "^1.0.15"
+    "skava-engine": "^1.0.16"
   }
 }

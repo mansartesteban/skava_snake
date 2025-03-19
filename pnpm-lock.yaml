@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.85.1
     version: 1.85.1
   skava-engine:
-    specifier: ^1.0.15
-    version: 1.0.15(sass@1.85.1)
+    specifier: ^1.0.16
+    version: 1.0.16(sass@1.85.1)
 
 devDependencies:
   vite:
@@ -918,8 +918,8 @@ packages:
     optionalDependencies:
       '@parcel/watcher': 2.5.1
 
-  /skava-engine@1.0.15(sass@1.85.1):
-    resolution: {integrity: sha512-xfEiYTOzJDkCth2s0BI9fxMJwRq41bj1y6diwt9LDt7dtkDL9iRR+VeDRRuORP3mdZEnuYXBRB3O7rGhNMOk+g==}
+  /skava-engine@1.0.16(sass@1.85.1):
+    resolution: {integrity: sha512-eHgps/WUV53Vkp1GDGaYImQbaM/Vb6b3q5KHB0T7wmPke/Y9JqO4PeAXhdEeURxt6DBJHhOMmMHaFD7rICE5Dg==}
     dependencies:
       uuid: 11.1.0
       vite: 6.2.2(sass@1.85.1)

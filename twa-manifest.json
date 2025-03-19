@@ -1,0 +1,43 @@
+{
+  "packageId": "app.vercel.skava_snake.twa",
+  "host": "skava-snake.vercel.app",
+  "name": "Snake - Skava labs",
+  "launcherName": "skava_snake",
+  "display": "fullscreen",
+  "themeColor": "#2E7CF6",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#7B4523",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://skava-snake.vercel.app/icon-512.png",
+  "maskableIconUrl": "https://skava-snake.vercel.app/icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "E:\\dev\\skava\\skava_snake\\android.keystore",
+    "alias": "skava-snake-android-key"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://skava-snake.vercel.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://skava-snake.vercel.app/",
+  "minSdkVersion": 21,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "1"
+}
