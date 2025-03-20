@@ -19,7 +19,7 @@
   "id": "/",
   "start_url": "/",
   "background_color": "#7B4523",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "/",
   "theme_color": "#2E7CF6",
   "screenshots": [
